@@ -16,7 +16,7 @@ class GlobalControllerAdvice {
         val errorCode = e.baseErrorCode
         return ResponseEntity.ok(
             ErrorResponse(
-                status = BaseErrorCode.INTERNAL_SERVER_ERROR,
+                status = errorCode,
                 code = errorCode.code,
                 message = errorCode.message
             )
