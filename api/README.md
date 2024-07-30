@@ -2,7 +2,7 @@
 
 
 
-- Ktlint 사용 : 빠르고 반복적인 실행, 코드 일관성(컨벤션/스타일)
+### Ktlint 사용 : 빠르고 반복적인 실행, 코드 일관성(컨벤션/스타일)
     ```
       id("org.jlleitschuh.gradle.ktlint") version "11.4.0"
     ```
@@ -53,7 +53,7 @@
 
 ---
 
-- 코틀린에서 setter를 닫고, getter를 열고 싶음
+### 코틀린에서 setter를 닫고, getter를 열고 싶음
   1. backing property 사용(getter를 제공하는 방식)
       ```kotlin
       class Car(
@@ -77,10 +77,54 @@
 
 ---
 
-
-- 테스트 DB
+### 테스트 DB
+  - Kotest는 Junit과 비교하여 중복을 줄이고 다양한 테스트 스타일을 지원한다.
   - docker container를 활용하여 테스트용 DB를 직접 띄운다.
     - 테스트할 때 테스트용 DB가 구동되어 있어야함.
   - test container를 활용하여 테스트 할 때에만 도커 컨테이너로 DB를 띄운다.
     - 테스트마다 test container의 시작/종료가 반복 되면 테스트가 오래 걸릴 수 있다.
     (한번띄우고 재사용하도록 최적화 필요)
+
+---
+
+### 코틀린 활용해보기
+
+- 널 안정성
+    - 물음표(?) 활용
+    ```kotlin
+    val a: String? = null
+    println(a?.length)
+    ```
+    - let 활용
+    ```kotlin
+    val name: String? // name이 nullable 할 때?
+    name?.let {
+        // null이 아니라면 실행할 코드
+    }
+    ```
+    - 엘비스 연산자
+    ```kotlin
+    val a: String? = null
+    val b = a?.length ?: 0 // 엘비스 연산자
+    // 단언 연산자(!!)도 있는데, 이건 지양 하자.
+    ```
+
+- 예외 처리 : 코틀린 제공 함수 많음
+  - IllegalArgumentException
+    - require(value: Boolean)
+    - require(value: T?)
+  - IllegalStateException
+    - check(value: Boolean)
+    - checkNotNull(value: T?)
+
+
+- 컬렉션
+  - 코틀린 표준 라이브러리 기본 컬렉션 타입 List, Map, Set
+  - 불변 컬렉션 / 가변 컬렉션
+
+
+- data 클래스
+  - equals(), hashCode()
+  - toString()
+  - componentN() functions
+  - copy()
