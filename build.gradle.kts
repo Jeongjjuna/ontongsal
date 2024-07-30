@@ -45,7 +45,6 @@ subprojects {
         // test container
         testImplementation("org.testcontainers:testcontainers")
         testImplementation("org.testcontainers:mysql")
-
     }
 
     kotlin {

@@ -1,2 +1,2 @@
 rootProject.name = "ontongsal"
-include("api")
+include("api", "websocket")
