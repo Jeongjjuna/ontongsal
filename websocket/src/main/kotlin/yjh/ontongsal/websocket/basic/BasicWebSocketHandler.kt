@@ -43,5 +43,5 @@ class BasicWebSocketHandler : TextWebSocketHandler() {
                 session.sendMessage(message)
             }
         }
-    } 
+    }
 }
