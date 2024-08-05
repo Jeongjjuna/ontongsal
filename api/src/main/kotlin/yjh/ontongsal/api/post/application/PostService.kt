@@ -25,14 +25,14 @@ class PostService(
 
     @Transactional
     fun update(id: Long, command: PostUpdateCommand): Long {
-        val post = postRepository.findByIdOrNull(id) ?: throw BaseException(BaseErrorCode.NOT_FOUND_POST)
+        val post = retrieve(id)
         post.update(command)
         return postRepository.save(post).id
     }
 
     @Transactional
     fun delete(id: Long): Long {
-        val post = postRepository.findByIdOrNull(id) ?: throw BaseException(BaseErrorCode.NOT_FOUND_POST)
+        val post = retrieve(id)
         post.delete()
         return postRepository.save(post).id
     }
@@ -42,7 +42,6 @@ class PostService(
     }
 
     fun retrieveAll(pageable: Pageable): Page<Post> {
-        throw IllegalArgumentException("아 하하ㅏㅎ....")
         return postRepository.findAll(pageable)
     }
 }
