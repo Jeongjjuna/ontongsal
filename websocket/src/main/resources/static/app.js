@@ -3,14 +3,14 @@
  * @type {StompJs.Client}
  */
 const stompClient = new StompJs.Client({
-    brokerURL: 'ws://localhost:8080/stomp', // 소켓 서버와 연결을 시도
+    brokerURL: 'ws://localhost:8080/connect/websocket', // 소켓 서버와 연결을 시도
     reconnectDelay: 200,
 });
 
 stompClient.onConnect = (frame) => {
     setConnected(true);
     console.log('Connected: ' + frame);
-    stompClient.subscribe('/topic/chatting', (received_message) => {
+    stompClient.subscribe('/topic/rooms/777', (received_message) => {
         console.log("> Received message: " + received_message.body)
         showChatting(JSON.parse(received_message.body).content);
     });
@@ -49,7 +49,7 @@ function disconnect() {
 function sendMessage() {
     console.log("> Send message : " + $("#chatting-message").val());
     stompClient.publish({
-        destination: "/app/chatting-message",
+        destination: "/app/chatting/777",
         body: JSON.stringify({'message': $("#chatting-message").val()})
     });
 }
