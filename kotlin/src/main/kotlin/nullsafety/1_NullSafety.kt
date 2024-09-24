@@ -1,4 +1,4 @@
-package `null-safety`
+package nullsafety
 
 class Name{
 }
