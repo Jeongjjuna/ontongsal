@@ -1,7 +1,4 @@
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
-}
 rootProject.name = "ontongsal"
-include("api")
-include("websocket")
-include("kotlin")
+include("ontongsal-restapi")
+include("ontongsal-websocket")
+include("ontongsal-kotlin-basic")
