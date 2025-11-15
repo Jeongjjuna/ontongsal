@@ -1,0 +1,24 @@
+GET http://localhost:8080/v1/comments/1
+
+###
+POST http://localhost:8080/v1/posts/111/comments
+Content-Type: application/json
+
+{
+    "content": "새로운 내용"
+}
+
+###
+#{
+#  "timestamp": "2025-11-15T13:28:19.171584Z",
+#  "code": 2000,
+#  "message": "Not Found",
+#  "details": "게시글을 찾을 수 없습니다"
+#}ㅂ
+#
+#{
+#  "timestamp": "2025-11-15T13:29:06.109821Z",
+#  "code": 2000,
+#  "message": "Not Found",
+#  "details": "이거 찾을 수 없어요 : 1"
+#}
