@@ -2,6 +2,7 @@ package yjh.ontongsal.api.board.adapter.input.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
+import io.kotest.core.annotation.DisplayName
 import io.mockk.every
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,6 +25,7 @@ import yjh.ontongsal.api.board.domain.comment.Comment
 import yjh.ontongsal.api.board.domain.comment.CommentContent
 import yjh.ontongsal.api.board.domain.comment.CommentStatus
 
+@DisplayName("[RestDocs] - 댓글")
 @WebMvcTest(CommentController::class)
 @AutoConfigureRestDocs(outputDir = "build/generated-snippets")
 class CommentControllerTest {

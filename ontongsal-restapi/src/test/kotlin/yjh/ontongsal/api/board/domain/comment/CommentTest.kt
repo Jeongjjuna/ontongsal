@@ -1,12 +1,14 @@
 package yjh.ontongsal.api.board.domain.comment
 
 import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.annotation.DisplayName
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import yjh.ontongsal.api.board.domain.Actor
 import yjh.ontongsal.api.board.domain.post.Post
 import yjh.ontongsal.api.common.exception.AppException
 
+@DisplayName("[도메인 단위테스트] - 댓글")
 class CommentTest : DescribeSpec({
 
     val post = Post.create(authorId = 1L, content = "게시글 초기 내용")
