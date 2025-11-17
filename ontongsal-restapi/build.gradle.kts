@@ -1,3 +1,13 @@
+plugins {
+    kotlin("plugin.spring")
+    kotlin("plugin.jpa")
+
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
+
+    id("org.asciidoctor.jvm.convert")
+}
+
 dependencies {
     // spring web
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -10,7 +20,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
     // jpa
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+//    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     // mysql
     runtimeOnly("com.mysql:mysql-connector-j")
@@ -36,4 +46,15 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers")
     testImplementation("org.testcontainers:mysql")
 
+}
+
+extra["snippetsDir"] = file("build/generated-snippets")
+
+tasks.test {
+    outputs.dir(project.extra["snippetsDir"]!!)
+}
+
+tasks.asciidoctor {
+    inputs.dir(project.extra["snippetsDir"]!!)
+    dependsOn(tasks.test)
 }
