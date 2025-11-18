@@ -1,4 +1,4 @@
-package yjh.ontongsal.websocket.basic
+package yjh.ontongsal.websocket.websocket
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.socket.config.annotation.EnableWebSocket

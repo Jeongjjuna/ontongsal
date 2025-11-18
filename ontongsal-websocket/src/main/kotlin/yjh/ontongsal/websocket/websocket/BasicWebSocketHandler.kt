@@ -1,4 +1,4 @@
-package yjh.ontongsal.websocket.basic
+package yjh.ontongsal.websocket.websocket
 
 import java.util.concurrent.ConcurrentHashMap
 import org.springframework.stereotype.Component
