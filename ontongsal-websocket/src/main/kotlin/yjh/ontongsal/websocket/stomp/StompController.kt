@@ -1,5 +1,7 @@
 package yjh.ontongsal.websocket.stomp
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.SendTo
@@ -14,31 +16,47 @@ import org.springframework.web.util.HtmlUtils
  */
 @Controller
 class StompController(
+    private val chatPublishRedisTemplate: StringRedisTemplate,
     private val simpMessageSendingOperations: SimpMessageSendingOperations,
 ) {
 
-    // 방법1
-    @MessageMapping("/chatting/{roomId}") // 클라이언트는 "/publish/chatting/123" 라는 경로로 메세지를 보낸다.
-    @SendTo("/topic/{roomId}") // return 값에 담긴 내용은 "/topic/123"를 구독하고 있는 모든 사람들에게 전파된다.
-    fun chattingVersion1(
-        @DestinationVariable roomId: Long,
-        chattingMessage: ChattingMessage,
-    ): ChattingResponse {
-        println("controller : 메세지를 받았습니다 >>> ${chattingMessage.message}")
-        return ChattingResponse(HtmlUtils.htmlEscape(chattingMessage.message))
-    }
+    // 방법1(단일서버)
+//    @MessageMapping("/chatting/{roomId}") // 클라이언트는 "/publish/chatting/123" 라는 경로로 메세지를 보낸다.
+//    @SendTo("/topic/{roomId}") // return 값에 담긴 내용은 "/topic/123"를 구독하고 있는 모든 사람들에게 전파된다.
+//    fun chattingVersion1(
+//        @DestinationVariable roomId: Long,
+//        chattingMessage: ChattingMessage,
+//    ): ChattingResponse {
+//        println("controller : 메세지를 받았습니다 >>> ${chattingMessage.message}")
+//        return ChattingResponse(HtmlUtils.htmlEscape(chattingMessage.message))
+//    }
 
-    // 방법2
+    // 방법2(단일서버)
+//    @MessageMapping("/chatting/{roomId}")
+//    fun chattingVersion2(
+//        @DestinationVariable roomId: Long,
+//        chattingMessage: ChattingMessage,
+//    ) {
+//        println("controller : 메세지를 받았습니다 >>> ${chattingMessage.message}")
+//
+//        simpMessageSendingOperations.convertAndSend(
+//            "/topic/$roomId",
+//            ChattingResponse(HtmlUtils.htmlEscape(chattingMessage.message))
+//        )
+//    }
+
+    // 방법2(멀터서버일 경우 pub/sub 기능을 활용해서 전파한다.)
     @MessageMapping("/chatting/{roomId}")
-    fun chattingVersion2(
+    fun chattingVersion3(
         @DestinationVariable roomId: Long,
         chattingMessage: ChattingMessage,
     ) {
         println("controller : 메세지를 받았습니다 >>> ${chattingMessage.message}")
 
-        simpMessageSendingOperations.convertAndSend(
-            "/topic/$roomId",
-            ChattingResponse(HtmlUtils.htmlEscape(chattingMessage.message))
-        )
+        // 1. redis 에 publish
+        val pubSubDTO = ChattingPubSubDTO(roomId, chattingMessage.message)
+        val objectMapper = ObjectMapper();
+        val message = objectMapper.writeValueAsString(pubSubDTO);
+        chatPublishRedisTemplate.convertAndSend("chat", message);
     }
 }
