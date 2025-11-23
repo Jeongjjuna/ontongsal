@@ -6,6 +6,7 @@ import org.aopalliance.intercept.MethodInterceptor
 import org.aopalliance.intercept.MethodInvocation
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
+import org.springframework.web.reactive.function.client.WebClientResponseException
 import yjh.ontongsal.exception.HttpClient4xxException
 import yjh.ontongsal.exception.HttpClient5xxException
 import yjh.ontongsal.http.BookClient
@@ -27,6 +28,9 @@ class ExceptionHandleInterceptor(
         } catch (e: HttpServerErrorException) {
             println("HTTP 5xx 오류: ${e.message} [method=$httpMethod, url=$url]")
             throw HttpClient5xxException()
+        } catch (e: WebClientResponseException) {
+            println("WebClientResponseException 오류: ${e.message} [method=$httpMethod, url=$url]")
+            throw e
         } catch (e: IOException) {
             println("IO 오류: ${e.message} [method=$httpMethod, url=$url]")
             throw e

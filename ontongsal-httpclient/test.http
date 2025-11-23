@@ -1,1 +1,7 @@
-GET http://localhost:8080/test
+GET http://localhost:8080/test1
+
+###
+GET http://localhost:8080/test2
+
+###
+GET http://localhost:8080/test3

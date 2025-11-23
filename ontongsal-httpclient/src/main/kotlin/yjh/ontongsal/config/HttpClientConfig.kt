@@ -13,6 +13,8 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.support.RestClientAdapter
+import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.support.WebClientAdapter
 import org.springframework.web.service.annotation.GetExchange
 import org.springframework.web.service.invoker.HttpExchangeAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory
@@ -20,6 +22,7 @@ import yjh.ontongsal.exception.HttpClient4xxException
 import yjh.ontongsal.exception.HttpClient5xxException
 import yjh.ontongsal.http.BookClient
 import yjh.ontongsal.http.CarClient
+import yjh.ontongsal.http.DogClient
 
 @Configuration
 class HttpClientConfig {
@@ -169,5 +172,32 @@ class HttpClientConfig {
         proxyFactory.addAdvice(LoggingInterceptor())
         proxyFactory.addAdvice(ExceptionHandleInterceptor(metadataMap))
         return proxyFactory.proxy as CarClient
+    }
+
+    @Bean
+    fun createDogClient(): DogClient {
+        // DogClient HttpMethod + URI 정보 캐싱
+        val metadataMap = mutableMapOf<String, Pair<String, String>>()
+        for (method in DogClient::class.java.methods) {
+            val getAnnotation: GetExchange? = method.getAnnotation(GetExchange::class.java)
+            val httpMethod = if (getAnnotation != null) "GET" else "UNKNOWN"
+            val url = getAnnotation?.value ?: "UNKNOWN"
+
+            // 인터페이스 이름 + 메서드 이름 조합으로 키 생성
+            val key = "${DogClient::class.java.name}.${method.name}"
+            metadataMap[key] = httpMethod to url
+        }
+
+        val webClient = WebClient.builder()
+            .baseUrl("http://localhost:8080/api")
+            .build();
+        val adapter: HttpExchangeAdapter = WebClientAdapter.create(webClient)
+        val httpServiceProxyFactory: HttpServiceProxyFactory = HttpServiceProxyFactory.builderFor(adapter).build()
+        val originalProxyClient = httpServiceProxyFactory.createClient(DogClient::class.java)
+
+        val proxyFactory = ProxyFactory(originalProxyClient)
+        proxyFactory.addAdvice(LoggingInterceptor())
+        proxyFactory.addAdvice(ExceptionHandleInterceptor(metadataMap))
+        return proxyFactory.proxy as DogClient
     }
 }
