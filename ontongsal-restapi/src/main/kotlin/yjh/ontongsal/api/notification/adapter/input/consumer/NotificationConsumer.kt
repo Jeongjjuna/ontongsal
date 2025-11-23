@@ -1,4 +1,4 @@
-package yjh.ontongsal.api.notification.adapter.consumer
+package yjh.ontongsal.api.notification.adapter.input.consumer
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
