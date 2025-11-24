@@ -27,7 +27,7 @@ import yjh.ontongsal.http.DogClient
 @Configuration
 class HttpClientConfig {
 
-    @Bean
+    // @Bean
     fun createBookClient(): BookClient {
         // BookClient HttpMethod + URI 정보 캐싱
         val metadataMap = mutableMapOf<String, Pair<String, String>>()
