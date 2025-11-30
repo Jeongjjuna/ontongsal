@@ -1,0 +1,101 @@
+@startuml
+skinparam ClassAttributeIconSize 0
+skinparam monochrome reverse
+
+package "Common VO" #DDDDDD {
+  class LottoNumbers <<VO>> {
+    + numbers : List<LottoNumber>
+  }
+
+  class LottoNumber <<VO>> {
+    + number : Int
+  }
+
+  LottoNumbers --> LottoNumber
+}
+
+' ==========================
+' Lotto Aggregate
+' ==========================
+package "Lotto Aggregate" #DDDDDD {
+  class Lotto <<Aggregate Root>> {
+    + id : Int
+    --
+    + round : Int
+    + isActive : Boolean
+    + startAt : Instant
+    + endAt : Instant
+    + drawnAt : Instant
+    + winningNumbers : LottoNumbers
+    + bonusNumber : Int
+    + createAt : Instant
+    + updateAt : Instant
+    + createBy : String
+    + updateBy : String
+  }
+
+  class PrizePolicy <<VO>> {
+    + firstPercent : Float   # 1등 상금 비율
+    + secondPercent : Float  # 2등 상금 비율
+    + thirdPercent : Float   # 3등 상금 비율
+    + fourthPercent : Float  # 4등 상금 비율
+    + fifthPercent : Float   # 5등 상금 비율
+  }
+
+  Lotto --> PrizePolicy
+  Lotto --> LottoNumbers
+}
+
+' ==========================
+' Entry Aggregate
+' ==========================
+class Entry <<Aggregate Root>> {
++ id : Int
++ lottoId : Int <<FK>>
+--
++ entryUserId : Int
++ entryNumbers : LottoNumbers
+}
+
+Entry --> LottoNumbers
+
+' ==========================
+' Ticket Aggregate
+' ==========================
+package "Ticket Aggregate" #DDDDDD {
+  class Ticket <<Aggregate Root>> {
+    + id : Int
+    --
+    + userId : Int
+    + count : Int
+  }
+
+  class TicketHistory <<Entity>> {
+      + id : Int
+      --
+      + userId : Int
+      + amount : Int
+      + reason : String
+      + createdAt : Instant
+  }
+}
+
+' ==========================
+' Draw Aggregate
+' ==========================
+
+class Draw <<Aggregate Root>> {
+  + id : Int
+  + lottoId : Int <<FK>>
+  --
+  + winnerUserId : Int
+  + rank : Int
+  + prize : decimal
+  + createAt : Instant
+  + createBy : String
+}
+
+Draw .right.> Lotto : lottoId 참조 (N:1)
+Entry .right.> Lotto : lottoId 참조 (1:N)
+
+@enduml
