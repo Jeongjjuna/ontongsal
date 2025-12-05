@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.util.ContentCachingRequestWrapper
 import org.springframework.web.util.ContentCachingResponseWrapper
+import yjh.ontongsal.api.common.utils.mask.SensitiveMaskingUtil
 
 private val log = KotlinLogging.logger {}
 
@@ -58,7 +59,7 @@ class LogFilter : OncePerRequestFilter() {
             "uri" to uri,
             "headers" to headers,
             "query" to queryParams,
-            "body" to requestBody
+            "body" to SensitiveMaskingUtil.maskFrom(requestBody)
         )
         log.info { logMap }
     }

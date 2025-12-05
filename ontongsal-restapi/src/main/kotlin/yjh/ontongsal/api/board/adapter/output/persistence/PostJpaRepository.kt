@@ -9,7 +9,6 @@ import yjh.ontongsal.api.board.domain.post.PostContent
 @Repository
 class PostJpaRepository : PostRepositoryPort {
     override fun findById(id: Long): Post? {
-        println("bbbb")
         return Post(
             id = id,
             authorId = 999,
