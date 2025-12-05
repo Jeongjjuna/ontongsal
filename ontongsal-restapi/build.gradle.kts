@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     kotlin("plugin.spring")
     kotlin("plugin.jpa")
@@ -57,4 +59,12 @@ tasks.test {
 tasks.asciidoctor {
     inputs.dir(project.extra["snippetsDir"]!!)
     dependsOn(tasks.test)
+}
+
+tasks.named<BootJar>("bootJar") {
+    enabled = true
+}
+
+tasks.named<Jar>("jar") {
+    enabled = false
 }
