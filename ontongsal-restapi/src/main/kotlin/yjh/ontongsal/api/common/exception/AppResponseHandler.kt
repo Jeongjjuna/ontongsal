@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 
+private val logger = KotlinLogging.logger {}
+
 @RestControllerAdvice
-class AppResponseHandler() : ResponseBodyAdvice<Any> {
-    val logger = KotlinLogging.logger {}
-    val objectMapper = ObjectMapper()
+class AppResponseHandler(
+    private val objectMapper: ObjectMapper,
+) : ResponseBodyAdvice<Any> {
 
     override fun supports(
         returnType: MethodParameter,
