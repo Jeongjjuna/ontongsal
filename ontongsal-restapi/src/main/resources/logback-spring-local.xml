@@ -22,7 +22,7 @@
         <appender-ref ref="CONSOLE" />
     </root>
 
-    <logger name="CUSTOM_LOGGER" level="INFO" additivitty="false">
+    <logger name="CUSTOM_LOGGER" level="INFO" additivity="false">
         <appender-ref ref="CUSTOM_APPENDER" />
     </logger>
 
