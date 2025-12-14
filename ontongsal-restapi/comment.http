@@ -1,7 +1,7 @@
 GET http://localhost:8080/v1/comments/1
 
 ###
-POST http://localhost:8080/v1/posts/111/comments
+POST http://localhost:8080/v1/articles/111/comments
 Content-Type: application/json
 
 {

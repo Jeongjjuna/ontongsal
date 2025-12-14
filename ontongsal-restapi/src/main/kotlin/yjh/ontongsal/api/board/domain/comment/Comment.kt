@@ -1,15 +1,15 @@
 package yjh.ontongsal.api.board.domain.comment
 
-import yjh.ontongsal.api.board.domain.Actor
 import yjh.ontongsal.api.board.domain.AuditInfo
 import yjh.ontongsal.api.board.domain.Content
-import yjh.ontongsal.api.board.domain.post.Post
+import yjh.ontongsal.api.board.domain.article.Article
+import yjh.ontongsal.api.common.domain.Actor
 import yjh.ontongsal.api.common.exception.AppException
 import yjh.ontongsal.api.common.exception.ErrorCode
 
 class Comment(
     val id: Long = 0,
-    val postId: Long,
+    val articleId: Long,
     val authorId: Long,
     val auditInfo: AuditInfo = AuditInfo(),
     val content: Content,
@@ -46,9 +46,9 @@ class Comment(
     }
 
     companion object {
-        fun create(post: Post, author: Actor, content: String): Comment {
+        fun create(article: Article, author: Actor, content: String): Comment {
             return Comment(
-                postId = post.id,
+                articleId = article.id,
                 authorId = author.id,
                 content = CommentContent(content),
             )

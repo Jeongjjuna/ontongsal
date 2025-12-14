@@ -10,8 +10,8 @@ enum class ErrorCode(
     USER_CONFLICT(1001, "사용자 충돌 발생"),
 
     // Post (2000~2999)
-    POST_NOT_FOUND(2000, "게시글을 찾을 수 없습니다"),
-    POST_CONFLICT(2001, "게시글 충돌 발생"),
+    ARTICLE_NOT_FOUND(2000, "게시글을 찾을 수 없습니다"),
+    ARTICLE_CONFLICT(2001, "게시글 충돌 발생"),
 
     // Comment (3000~3999)
     COMMENT_NOT_FOUND(3000, "댓글을 찾을 수 없습니다"),

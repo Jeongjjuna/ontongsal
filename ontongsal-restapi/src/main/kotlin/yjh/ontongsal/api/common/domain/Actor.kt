@@ -1,4 +1,4 @@
-package yjh.ontongsal.api.board.domain
+package yjh.ontongsal.api.common.domain
 
 class Actor(
     val id: Long,
