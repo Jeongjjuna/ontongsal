@@ -1,8 +1,8 @@
-package yjh.ontongsal.api.board.domain.post
+package yjh.ontongsal.api.board.domain.article
 
 import yjh.ontongsal.api.board.domain.Content
 
-class PostContent(
+class ArticleContent(
     content: String,
 ) : Content(content) {
 

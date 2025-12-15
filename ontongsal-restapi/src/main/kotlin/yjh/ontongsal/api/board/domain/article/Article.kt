@@ -1,9 +1,9 @@
-package yjh.ontongsal.api.board.domain.post
+package yjh.ontongsal.api.board.domain.article
 
 import yjh.ontongsal.api.board.domain.AuditInfo
 import yjh.ontongsal.api.board.domain.Content
 
-class Post(
+class Article(
     val id: Long = 0,
     val authorId: Long,
     val auditInfo: AuditInfo = AuditInfo(),
@@ -11,10 +11,10 @@ class Post(
 ) {
 
     companion object {
-        fun create(authorId: Long, content: String): Post {
-            return Post(
+        fun create(authorId: Long, content: String): Article {
+            return Article(
                 authorId = authorId,
-                content = PostContent(content),
+                content = ArticleContent(content),
             )
         }
     }

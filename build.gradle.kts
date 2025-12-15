@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.jpa") version "1.9.25" apply false
 
     /* restdocs */
-    id("org.asciidoctor.jvm.convert") version "4.0.5" apply false
+    id("org.asciidoctor.jvm.convert") version "3.3.2" apply false
 
     /* ktlint */
     id("org.jlleitschuh.gradle.ktlint") version "11.4.0" apply false

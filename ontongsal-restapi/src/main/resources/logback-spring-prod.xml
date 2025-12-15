@@ -44,7 +44,7 @@
     </appender>
 
     <root level="INFO">
-<!--        <appender-ref ref="CONSOLE"/>-->
+        <!--        <appender-ref ref="CONSOLE"/>-->
         <appender-ref ref="FILE-INFO"/>
         <appender-ref ref="FILE-ERROR"/>
     </root>

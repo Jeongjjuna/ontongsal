@@ -19,11 +19,11 @@
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="CONSOLE"/>
     </root>
 
     <logger name="CUSTOM_LOGGER" level="INFO" additivity="false">
-        <appender-ref ref="CUSTOM_APPENDER" />
+        <appender-ref ref="CUSTOM_APPENDER"/>
     </logger>
 
 </included>

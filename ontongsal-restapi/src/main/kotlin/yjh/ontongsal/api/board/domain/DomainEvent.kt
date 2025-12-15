@@ -10,7 +10,7 @@ interface DomainEvent {
 
 // 댓글 작성 이벤트
 data class CommentCreatedEvent(
-    val postId: Long,
+    val articleId: Long,
     val commentId: Long,
     override val occurredAt: Instant = Instant.now(),
     override val eventId: String = UUID.randomUUID().toString(),
