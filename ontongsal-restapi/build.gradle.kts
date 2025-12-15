@@ -10,6 +10,8 @@ plugins {
     id("org.asciidoctor.jvm.convert")
 }
 
+val asciidoctorExt by configurations.creating
+
 dependencies {
     // spring web
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -34,7 +36,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     // spring rest docs
-    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor:4.0.0")
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc:4.0.0")
 
     // mockk
     testImplementation("com.ninja-squad:springmockk:4.0.2")
@@ -50,19 +53,26 @@ dependencies {
 
 }
 
-extra["snippetsDir"] = file("build/generated-snippets")
+val snippetsDir by extra { file("build/generated-snippets") }
 
 tasks.test {
-    outputs.dir(project.extra["snippetsDir"]!!)
+    outputs.dir(snippetsDir)
 }
 
 tasks.asciidoctor {
-    inputs.dir(project.extra["snippetsDir"]!!)
+    inputs.dir(snippetsDir)
+    configurations(asciidoctorExt)
     dependsOn(tasks.test)
 }
 
 tasks.named<BootJar>("bootJar") {
     enabled = true
+
+    dependsOn(tasks.asciidoctor)
+
+    from(tasks.asciidoctor.get().outputDir) {
+        into("static/docs")
+    }
 }
 
 tasks.named<Jar>("jar") {
