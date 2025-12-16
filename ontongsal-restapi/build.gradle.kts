@@ -32,6 +32,12 @@ dependencies {
     // logging
     implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
 
+    // resilience4j
+    val resilience4jVersion = "2.3.0"
+    implementation("io.github.resilience4j:resilience4j-spring-boot3:${resilience4jVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-aop")
+
     // spring test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 

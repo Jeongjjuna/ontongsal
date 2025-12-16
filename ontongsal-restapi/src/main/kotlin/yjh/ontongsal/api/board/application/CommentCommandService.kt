@@ -14,12 +14,14 @@ import yjh.ontongsal.api.board.application.output.SaveCommentPort
 import yjh.ontongsal.api.board.domain.CommentCreatedEvent
 import yjh.ontongsal.api.board.domain.article.Article
 import yjh.ontongsal.api.board.domain.comment.Comment
+import yjh.ontongsal.api.common.config.jpa.TransactionManager
 import yjh.ontongsal.api.common.domain.Actor
 import yjh.ontongsal.api.common.exception.AppException
 import yjh.ontongsal.api.common.exception.ErrorCode
 
 @Service
 class CommentCommandService(
+    private val transactionManager: TransactionManager,
     private val loadArticlePort: LoadArticlePort,
     private val saveCommentPort: SaveCommentPort,
     private val deleteCommentPort: DeleteCommentPort,
@@ -27,20 +29,21 @@ class CommentCommandService(
 ) : WriteCommentUseCase, UpdateCommentUseCase, DeleteCommentUseCase {
 
     override fun write(command: CommentWriteCommand): Long {
-        val article: Article = loadArticlePort.findById(command.articleId)
-            ?: throw AppException.NotFound(ErrorCode.ARTICLE_NOT_FOUND, "Article ${command.articleId} not found")
 
-        val actor = Actor(command.actorId, command.actorName)
-        val comment = Comment.create(article, actor, command.content)
-        val saved = saveCommentPort.create(comment)
+        val comment = transactionManager.run {
+            val article: Article = loadArticlePort.findById(command.articleId)
+                ?: throw AppException.NotFound(ErrorCode.ARTICLE_NOT_FOUND, "Article ${command.articleId} not found")
 
-        val event = CommentCreatedEvent(
-            articleId = command.articleId,
-            commentId = saved.id
-        )
+            val actor = Actor(command.actorId, command.actorName)
+            val comment = Comment.create(article, actor, command.content)
+
+            saveCommentPort.create(comment)
+        }
+
+        val event = CommentCreatedEvent(articleId = command.articleId, commentId = comment.id)
         eventPublisher.publish(event)
 
-        return saved.id
+        return comment.id
     }
 
     override fun update(command: CommentUpdateCommand): Long {

@@ -35,4 +35,17 @@ class CommentPersistenceAdapter(
             status = CommentStatus.ACTIVE
         )
     }
+
+    override fun findAllBy(articleId: Long, commentIdCursor: Long, size: Int): List<Comment> {
+        return listOf(
+            Comment(
+                id = 111,
+                articleId = 999,
+                authorId = 111,
+                auditInfo = AuditInfo(),
+                content = CommentContent("샘플 댓글 내용입니다."),
+                status = CommentStatus.ACTIVE
+            )
+        )
+    }
 }

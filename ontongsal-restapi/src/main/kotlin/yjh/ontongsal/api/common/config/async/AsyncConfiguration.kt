@@ -1,14 +1,14 @@
-package yjh.ontongsal.api.common.config
+package yjh.ontongsal.api.common.config.async
 
-import java.util.concurrent.Executor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
+import java.util.concurrent.Executor
 
 @EnableAsync
 @Configuration
-class AsyncConfig {
+class AsyncConfiguration {
 
     @Bean(name = ["eventConsumeTaskExecutor"])
     fun eventConsumeTaskExecutor(): Executor {
