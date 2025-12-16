@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service
 import yjh.ontongsal.api.board.application.input.GetCommentUseCase
 import yjh.ontongsal.api.board.application.output.LoadCommentPort
 import yjh.ontongsal.api.board.domain.comment.Comment
+import yjh.ontongsal.api.common.config.resilience4j.CircuitBreakerNames.COMMENT_READ
 import yjh.ontongsal.api.common.exception.AppException
 import yjh.ontongsal.api.common.exception.ErrorCode
 import yjh.ontongsal.api.common.utils.CircuitBreakerUtil.execute
@@ -18,7 +19,7 @@ class CommentQueryService(
     private val circuitBreaker: CircuitBreakerRegistry,
 ) : GetCommentUseCase {
 
-    private val breaker = circuitBreaker.circuitBreaker("comment-read")
+    private val breaker = circuitBreaker.circuitBreaker(COMMENT_READ)
 
     override fun getComments(articleId: Long, commentIdCursor: Long, size: Int): List<Comment> {
         return breaker.execute(

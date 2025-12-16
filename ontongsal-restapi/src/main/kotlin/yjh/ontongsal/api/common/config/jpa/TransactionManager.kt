@@ -23,7 +23,7 @@ class TransactionAdvice : TransactionRunner {
 }
 
 @Component
-class TransactionManager(
+class TransactionalExecutor(
     private val transactionAdvice: TransactionAdvice,
 ) {
     fun <T> run(block: () -> T): T = transactionAdvice.run(block)

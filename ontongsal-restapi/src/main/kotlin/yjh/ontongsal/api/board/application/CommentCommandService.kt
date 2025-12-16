@@ -14,23 +14,23 @@ import yjh.ontongsal.api.board.application.output.SaveCommentPort
 import yjh.ontongsal.api.board.domain.CommentCreatedEvent
 import yjh.ontongsal.api.board.domain.article.Article
 import yjh.ontongsal.api.board.domain.comment.Comment
-import yjh.ontongsal.api.common.config.jpa.TransactionManager
+import yjh.ontongsal.api.common.config.jpa.TransactionalExecutor
 import yjh.ontongsal.api.common.domain.Actor
 import yjh.ontongsal.api.common.exception.AppException
 import yjh.ontongsal.api.common.exception.ErrorCode
 
 @Service
 class CommentCommandService(
-    private val transactionManager: TransactionManager,
     private val loadArticlePort: LoadArticlePort,
     private val saveCommentPort: SaveCommentPort,
     private val deleteCommentPort: DeleteCommentPort,
+    private val tx: TransactionalExecutor,
     private val eventPublisher: EventPublisher,
 ) : WriteCommentUseCase, UpdateCommentUseCase, DeleteCommentUseCase {
 
     override fun write(command: CommentWriteCommand): Long {
 
-        val comment = transactionManager.run {
+        val comment = tx.run {
             val article: Article = loadArticlePort.findById(command.articleId)
                 ?: throw AppException.NotFound(ErrorCode.ARTICLE_NOT_FOUND, "Article ${command.articleId} not found")
 
