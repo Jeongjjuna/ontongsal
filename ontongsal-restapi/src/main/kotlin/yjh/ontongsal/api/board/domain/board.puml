@@ -1,0 +1,79 @@
+@startuml
+skinparam ClassAttributeIconSize 0
+skinparam monochrome reverse
+
+package "Common VO" #DDDDDD {
+
+  class AuditInfo <<VO>> {
+    + createdAt : Instant
+    + updatedAt : Instant
+    + createdBy : String
+    + updatedBy : String
+  }
+
+  abstract class Content <<VO>> {
+    + content : String
+    {abstract} + checkLength() : void
+  }
+}
+
+' ==========================
+' Board Aggregate
+' ==========================
+package "Board Aggregate" #DDDDDD {
+  class Board <<Aggregate Root>> {
+    + id : Int
+    --
+    + title : String
+    + type : String
+    + auditInfo : AuditInfo
+  }
+
+  Board --> AuditInfo
+}
+
+' ==========================
+' Article Aggregate
+' ==========================
+package "Article Aggregate" #DDDDDD {
+  class Article <<Aggregate Root>> {
+    + id : Int
+    + boardId : Int <<FK>>
+    --
+    + title : String
+    + content : ArticleContent
+    + auditInfo : AuditInfo
+  }
+
+  class ArticleContent <<VO>> {
+    + checkLength() : void
+  }
+
+  Content <|--up-- ArticleContent
+  Article --> AuditInfo
+  Article --> ArticleContent
+  Article .left.> Board : boardId 참조 (1 : N)
+}
+
+' ==========================
+' Comment Aggregate
+' ==========================
+package "Comment Aggregate" #DDDDDD {
+  class Comment <<Aggregate Root>> {
+    + id : Int
+    + articleId : Int <<FK>>
+    --
+    + content : CommentContent
+    + auditInfo : AuditInfo
+  }
+
+  class CommentContent <<VO>> {
+    + checkLength() : void
+  }
+
+  Content <|--up-- CommentContent
+  Comment --> CommentContent
+  Comment .left.> Article : articleId 참조 (1 : N)
+}
+
+@enduml
