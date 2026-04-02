@@ -14,7 +14,7 @@ import yjh.ontongsal.restapi.exception.AppException
 class CommentTest : DescribeSpec({
 
     val article = Article.create(authorId = 1L, content = "게시글 초기 내용")
-    val author = Actor(id = 100L, userName = "작성자")
+    val author = Actor(userId = 100L, userName = "작성자")
 
     describe("댓글 작성할 때") {
         it("처음 작성하면 상태는 활성이어야 한다") {
@@ -25,7 +25,7 @@ class CommentTest : DescribeSpec({
         it("게시글, 작성자, 내용이 정확히 설정되어야 한다") {
             val comment = Comment.create(article = article, author = author, content = "댓글 내용")
             comment.articleId shouldBe article.id
-            comment.authorId shouldBe author.id
+            comment.authorId shouldBe author.userId
             comment.content.contentText shouldBe "댓글 내용"
         }
     }
@@ -46,7 +46,7 @@ class CommentTest : DescribeSpec({
     describe("댓글 내용 수정") {
         it("작성자가 아닌 경우 내용은 변경할 수 없다") {
             val comment = Comment.create(article = article, author = author, content = "내용")
-            val otherActor = Actor(id = 999L, userName = "다른사람")
+            val otherActor = Actor(userId = 999L, userName = "다른사람")
             shouldThrow<AppException.Unauthorized> {
                 comment.updateContent("변경 내용", otherActor)
             }
@@ -70,7 +70,7 @@ class CommentTest : DescribeSpec({
     describe("댓글 삭제") {
         it("작성자가 아닌 경우 댓글은 삭제할 수 없다") {
             val comment = Comment.create(article = article, author = author, content = "내용")
-            val otherActor = Actor(id = 999L, userName = "다른사람")
+            val otherActor = Actor(userId = 999L, userName = "다른사람")
             shouldThrow<AppException.Unauthorized> {
                 comment.delete(otherActor)
             }

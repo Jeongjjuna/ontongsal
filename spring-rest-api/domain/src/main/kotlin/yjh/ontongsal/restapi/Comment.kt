@@ -7,7 +7,7 @@ class Comment(
     val id: Long = 0,
     val articleId: Long,
     val authorId: Long,
-    val auditInfo: AuditInfo = AuditInfo(),
+    val auditInfo: AuditInfo,
     val content: Content,
     status: CommentStatus = CommentStatus.ACTIVE,
 ) {
@@ -28,7 +28,6 @@ class Comment(
         }
 
         content.update(newContent)
-        auditInfo.update()
     }
 
     // 댓글 삭제 (논리 삭제)
@@ -38,16 +37,17 @@ class Comment(
         }
 
         status = status.delete()
-        auditInfo.update()
     }
 
-    companion object {
-        fun create(article: Article, author: Actor, content: String): Comment {
-            return Comment(
-                articleId = article.id,
-                authorId = author.id,
-                content = CommentContent(content),
-            )
+    fun update(actor: Actor, commentContent: Content) {
+        if (status.isDeleted()) {
+            throw AppException.BadRequest(ErrorCode.COMMENT_DELETED, "이미 삭제된 댓글입니다. 수정할 수 없습니다.")
         }
+
+        if (!actor.isAuthor(authorId)) {
+            throw AppException.Unauthorized(ErrorCode.COMMENT_MODIFY_FORBIDDEN, "댓글 작성자만 수정할 수 있습니다.")
+        }
+
+        content.update(commentContent.contentText)
     }
 }

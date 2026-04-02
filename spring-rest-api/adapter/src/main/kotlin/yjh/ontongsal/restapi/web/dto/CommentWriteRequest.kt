@@ -2,21 +2,16 @@ package yjh.ontongsal.restapi.web.dto
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
+import yjh.ontongsal.restapi.CommentContent
 import yjh.ontongsal.restapi.dto.CommentWriteCommand
 
 data class CommentCreateRequest(
     @field:NotNull(message = "댓글 내용은 필수입니다.")
     @field:NotBlank(message = "댓글 내용은 비어있을 수 없습니다.")
     val content: String,
-)
+) {
 
-fun CommentCreateRequest.toCommand(
-    articleId: Long,
-    authorId: Long,
-    authorName: String,
-) = CommentWriteCommand(
-    articleId = articleId,
-    actorId = authorId,
-    actorName = authorName,
-    content = this.content,
-)
+    fun toContent(): CommentContent {
+        return CommentContent(content)
+    }
+}

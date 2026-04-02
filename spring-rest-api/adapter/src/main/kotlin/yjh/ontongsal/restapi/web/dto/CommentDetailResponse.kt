@@ -1,8 +1,8 @@
 package yjh.ontongsal.restapi.web.dto
 
-import java.time.Instant
-import yjh.ontongsal.restapi.Content
 import yjh.ontongsal.restapi.CommentStatus
+import yjh.ontongsal.restapi.Content
+import java.time.Instant
 
 data class CommentDetailResponse(
     val id: Long,

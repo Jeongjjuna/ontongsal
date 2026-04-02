@@ -14,10 +14,8 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import yjh.ontongsal.restapi.usecase.DeleteCommentUseCase
+import yjh.ontongsal.restapi.usecase.CommentUseCase
 import yjh.ontongsal.restapi.usecase.GetCommentUseCase
-import yjh.ontongsal.restapi.usecase.UpdateCommentUseCase
-import yjh.ontongsal.restapi.usecase.WriteCommentUseCase
 import yjh.ontongsal.restapi.web.CommentController
 
 @DisplayName("[RestDocs] - 댓글")
@@ -28,13 +26,7 @@ class CommentControllerTest(
     private val mockMvc: MockMvc,
 
     @MockkBean
-    private val writeCommentUseCase: WriteCommentUseCase,
-
-    @MockkBean
-    private val updateCommentUseCase: UpdateCommentUseCase,
-
-    @MockkBean
-    private val deleteCommentUseCase: DeleteCommentUseCase,
+    private val commentUseCase: CommentUseCase,
 
     @MockkBean
     private val getCommentUseCase: GetCommentUseCase,

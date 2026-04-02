@@ -38,9 +38,6 @@ dependencies {
     // UseCase, Service에 필요한 최소 Spring 의존
     implementation(libs.spring.context)
 
-    // Circuit Breaker
-    implementation(libs.resilience4j.circuitbreaker)
-
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlin.logging)
 }

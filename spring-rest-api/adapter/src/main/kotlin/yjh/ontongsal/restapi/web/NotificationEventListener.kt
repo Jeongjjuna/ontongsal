@@ -4,8 +4,10 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
-import yjh.ontongsal.restapi.CommentCreatedEvent
+import yjh.ontongsal.restapi.event.CommentCreatedEvent
 import yjh.ontongsal.restapi.usecase.NotificationUsecase
+
+private val logger = KotlinLogging.logger {}
 
 @Component
 class NotificationEventListener(

@@ -3,10 +3,8 @@ package yjh.ontongsal.restapi
 import java.time.Instant
 
 class AuditInfo(
-    val createdAt: Instant = Instant.now(),
+    val createdAt: Instant,
     var updatedAt: Instant? = null,
-) {
-    fun update() {
-        updatedAt = Instant.now()
-    }
-}
+    val createdBy: String? = null,
+    var updatedBy: String? = null,
+)

@@ -40,6 +40,8 @@ dependencies {
 
     implementation(libs.spring.boot.starter)
 
+    runtimeOnly(libs.mysql.connector.j)
+
     testImplementation(libs.spring.boot.starter.test)
     asciidoctorExt(libs.spring.restdocs.asciidoctor)
     testImplementation(libs.kotest.runner.junit5)

@@ -1,6 +1,7 @@
 package yjh.ontongsal.restapi
 
 import org.springframework.stereotype.Service
+import yjh.ontongsal.restapi.event.CommentCreatedEvent
 import yjh.ontongsal.restapi.usecase.NotificationUsecase
 
 @Service
