@@ -1,8 +1,8 @@
 plugins {
-    kotlin("jvm") version "1.9.25"
-    kotlin("plugin.spring") version "1.9.25"
-    kotlin("plugin.jpa") version "1.9.25"
-    id("io.spring.dependency-management") version "1.1.7"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.spring)
+    alias(libs.plugins.kotlin.jpa)
+    alias(libs.plugins.spring.dependency.management)
 }
 
 group = "yjh.ontongsal"
@@ -29,7 +29,7 @@ tasks.withType<Test> {
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.boot:spring-boot-dependencies:3.4.11")
+        mavenBom(libs.spring.boot.bom.get().toString())
     }
 }
 
@@ -38,21 +38,20 @@ dependencies {
     implementation("yjh.ontongsal:domain")
 
     // Spring Web
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework:spring-tx")
+    implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.validation)
+    implementation(libs.spring.tx)
 
     // Resilience4j
-    val resilience4jVersion = "2.3.0"
-    implementation("io.github.resilience4j:resilience4j-spring-boot3:${resilience4jVersion}")
-    implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation(libs.resilience4j.spring.boot3)
+    implementation(libs.spring.boot.starter.aop)
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
+    implementation(libs.jackson.module.kotlin)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.kotlin.logging)
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc:4.0.0")
-    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
-    testImplementation("com.ninja-squad:springmockk:4.0.2")
+    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.spring.restdocs.mockmvc)
+    testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.springmockk)
 }

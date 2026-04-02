@@ -5,6 +5,12 @@ pluginManagement {
     }
 }
 
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") { from(files("../app/gradle/libs.versions.toml")) }
+    }
+}
+
 rootProject.name = "adapter"
 
 includeBuild("../domain")

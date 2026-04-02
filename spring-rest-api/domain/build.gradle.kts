@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.25"
+    alias(libs.plugins.kotlin.jvm)
 }
 
 group = "yjh.ontongsal"
@@ -24,8 +24,7 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-
 dependencies {
-    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
-    testImplementation("io.kotest:kotest-assertions-core:5.9.1")
+    testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.kotest.assertions.core)
 }
