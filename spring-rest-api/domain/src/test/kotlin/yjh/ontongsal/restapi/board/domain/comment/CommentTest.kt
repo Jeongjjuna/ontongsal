@@ -4,11 +4,11 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.annotation.DisplayName
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
-import yjh.ontongsal.restapi.Article
-import yjh.ontongsal.restapi.Comment
-import yjh.ontongsal.restapi.CommentStatus
-import yjh.ontongsal.restapi.Actor
-import yjh.ontongsal.restapi.exception.AppException
+import yjh.ontongsal.restapi.domain.Actor
+import yjh.ontongsal.restapi.domain.Article
+import yjh.ontongsal.restapi.domain.Comment
+import yjh.ontongsal.restapi.domain.CommentStatus
+import yjh.ontongsal.restapi.domain.exception.AppException
 
 @DisplayName("[도메인 단위테스트] - 댓글")
 class CommentTest : DescribeSpec({

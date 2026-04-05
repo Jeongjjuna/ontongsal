@@ -14,8 +14,8 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import yjh.ontongsal.restapi.usecase.CommentUseCase
-import yjh.ontongsal.restapi.usecase.GetCommentUseCase
+import yjh.ontongsal.restapi.application.usecase.CommentUseCase
+import yjh.ontongsal.restapi.application.usecase.GetCommentUseCase
 import yjh.ontongsal.restapi.web.CommentController
 
 @DisplayName("[RestDocs] - 댓글")
