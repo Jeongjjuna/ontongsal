@@ -1,5 +1,6 @@
 package yjh.ontongsal.restapi.adpater.web
 
+import com.epages.restdocs.apispec.ResourceDocumentation.headerWithName
 import com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName
 import com.epages.restdocs.apispec.ResourceDocumentation.resource
 import com.epages.restdocs.apispec.ResourceSnippetParameters
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import yjh.ontongsal.restapi.application.usecase.CommentUseCase
@@ -73,6 +75,7 @@ class CommentControllerTest(
                 )
                     .andDo(print())
                     .andExpect(status().isCreated)
+                    .andExpect(header().exists("Location"))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$.code").value(0))
                     .andDo(
@@ -88,6 +91,9 @@ class CommentControllerTest(
                                     )
                                     .requestFields(
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용 (1자 이상, 5000자 이하)")
+                                    )
+                                    .responseHeaders(
+                                        headerWithName("Location").description("생성된 댓글의 URI")
                                     )
                                     .responseFields(
                                         fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드 (0: 성공)"),
@@ -116,6 +122,7 @@ class CommentControllerTest(
                 )
                     .andDo(print())
                     .andExpect(status().isCreated)
+                    .andExpect(header().exists("Location"))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$.code").value(0))
                     .andDo(
@@ -131,6 +138,9 @@ class CommentControllerTest(
                                     )
                                     .requestFields(
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("수정할 댓글 내용 (1자 이상, 5000자 이하)")
+                                    )
+                                    .responseHeaders(
+                                        headerWithName("Location").description("수정된 댓글의 URI")
                                     )
                                     .responseFields(
                                         fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드 (0: 성공)"),
