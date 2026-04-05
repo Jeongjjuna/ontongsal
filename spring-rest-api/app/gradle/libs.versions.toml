@@ -8,7 +8,9 @@ kotlin-logging         = "5.1.4"
 kotest                 = "5.9.1"
 kotest-spring          = "1.3.0"
 springmockk            = "4.0.2"
-spring-restdocs        = "4.0.0"
+spring-restdocs        = "3.0.5"
+restdocs-api-spec      = "0.19.4"
+springdoc-openapi      = "2.8.5"
 
 [plugins]
 kotlin-jvm                   = { id = "org.jetbrains.kotlin.jvm",           version.ref = "kotlin" }
@@ -17,6 +19,7 @@ kotlin-jpa                   = { id = "org.jetbrains.kotlin.plugin.jpa",     ver
 spring-boot                  = { id = "org.springframework.boot",            version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management",     version.ref = "spring-dependency-mgmt" }
 asciidoctor                  = { id = "org.asciidoctor.jvm.convert",         version.ref = "asciidoctor" }
+restdocs-api-spec            = { id = "com.epages.restdocs-api-spec",         version.ref = "restdocs-api-spec" }
 
 [libraries]
 # Spring Boot BOM
@@ -49,3 +52,5 @@ kotest-runner-junit5           = { module = "io.kotest:kotest-runner-junit5",   
 kotest-assertions-core         = { module = "io.kotest:kotest-assertions-core",              version.ref = "kotest" }
 kotest-extensions-spring       = { module = "io.kotest.extensions:kotest-extensions-spring", version.ref = "kotest-spring" }
 springmockk                    = { module = "com.ninja-squad:springmockk",                   version.ref = "springmockk" }
+restdocs-api-spec-mockmvc      = { module = "com.epages:restdocs-api-spec-mockmvc",          version.ref = "restdocs-api-spec" }
+springdoc-openapi-webmvc       = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }

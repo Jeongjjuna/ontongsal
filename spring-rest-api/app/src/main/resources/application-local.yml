@@ -28,3 +28,10 @@ logging:
         org.springframework.web: DEBUG
 #    pattern:
 #        console: "%d{HH:mm:ss.SSS}|%highlight(%-5level)|%X{traceId:-}|%green(%t)|%logger|%blue(\\(%F:%L\\))|%msg%n"
+
+springdoc:
+    #  api-docs:
+    #    enabled: false
+    swagger-ui:
+        url: /docs/openapi3.yaml
+        path: /swagger-ui

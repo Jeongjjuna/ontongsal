@@ -1,0 +1,72 @@
+= 댓글 API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== 댓글 생성
+
+`POST /v1/articles/{id}/comments`
+
+=== Path Parameters
+include::{snippets}/comment-write/path-parameters.adoc[]
+
+=== Request Fields
+include::{snippets}/comment-write/request-fields.adoc[]
+
+=== Response Fields
+include::{snippets}/comment-write/response-fields.adoc[]
+
+=== HTTP Example
+include::{snippets}/comment-write/http-request.adoc[]
+include::{snippets}/comment-write/http-response.adoc[]
+
+---
+
+== 댓글 수정
+
+`PUT /v1/comments/{id}`
+
+=== Path Parameters
+include::{snippets}/comment-update/path-parameters.adoc[]
+
+=== Request Fields
+include::{snippets}/comment-update/request-fields.adoc[]
+
+=== Response Fields
+include::{snippets}/comment-update/response-fields.adoc[]
+
+=== HTTP Example
+include::{snippets}/comment-update/http-request.adoc[]
+include::{snippets}/comment-update/http-response.adoc[]
+
+---
+
+== 댓글 삭제
+
+`DELETE /v1/comments/{id}`
+
+=== Path Parameters
+include::{snippets}/comment-delete/path-parameters.adoc[]
+
+=== HTTP Example
+include::{snippets}/comment-delete/http-request.adoc[]
+include::{snippets}/comment-delete/http-response.adoc[]
+
+---
+
+== 댓글 목록 조회
+
+`GET /v1/comments`
+
+=== Query Parameters
+include::{snippets}/comment-list/query-parameters.adoc[]
+
+=== Response Fields
+include::{snippets}/comment-list/response-fields.adoc[]
+
+=== HTTP Example
+include::{snippets}/comment-list/http-request.adoc[]
+include::{snippets}/comment-list/http-response.adoc[]
