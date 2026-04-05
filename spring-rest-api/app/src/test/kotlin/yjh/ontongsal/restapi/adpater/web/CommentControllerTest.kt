@@ -42,7 +42,6 @@ import java.time.Instant
 @WebMvcTest(CommentController::class)
 @AutoConfigureRestDocs(outputDir = "build/generated-snippets")
 class CommentControllerTest(
-    @Autowired
     private val mockMvc: MockMvc,
 
     @MockkBean
