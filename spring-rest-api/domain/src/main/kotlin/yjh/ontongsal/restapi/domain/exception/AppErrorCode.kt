@@ -12,6 +12,9 @@ enum class ErrorCode(
     // Post (2000~2999)
     ARTICLE_NOT_FOUND(2000, "게시글을 찾을 수 없습니다"),
     ARTICLE_CONFLICT(2001, "게시글 충돌 발생"),
+    ARTICLE_DELETED(2002, "삭제된 게시글입니다."),
+    ARTICLE_MODIFY_FORBIDDEN(2003, "작성자가 아니면 게시글을 수정할 수 없습니다."),
+    ARTICLE_DELETE_FORBIDDEN(2004, "작성자가 아니면 게시글을 삭제할 수 없습니다."),
 
     // Comment (3000~3999)
     COMMENT_NOT_FOUND(3000, "댓글을 찾을 수 없습니다"),

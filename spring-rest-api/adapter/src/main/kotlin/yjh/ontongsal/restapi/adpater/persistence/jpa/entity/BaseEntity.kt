@@ -4,9 +4,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.MappedSuperclass
 import org.springframework.data.annotation.CreatedBy
-import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
-import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import yjh.ontongsal.restapi.domain.AuditInfo
 import java.time.Instant
@@ -15,25 +13,27 @@ import java.time.Instant
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseEntity(
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
+    // @CreatedDate
+    @Column(nullable = false)
     var createdAt: Instant? = null,
 
-    @LastModifiedDate
-    var updatedAt: Instant? = null,
-
+    @Column(nullable = false, length = 50)
     @CreatedBy
-    @Column(nullable = false, updatable = false)
     var createdBy: String? = null,
 
+    // @LastModifiedDate
+    @Column(nullable = false)
+    var updatedAt: Instant? = null,
+
+    @Column(nullable = false, length = 50)
     @LastModifiedBy
     var updatedBy: String? = null,
 ) {
-    fun toAuditInfo(): AuditInfo =
+    protected fun toAuditInfo(): AuditInfo =
         AuditInfo(
             createdAt = requireNotNull(createdAt),
-            updatedAt = updatedAt,
-            createdBy = createdBy,
-            updatedBy = updatedBy,
+            updatedAt = requireNotNull(updatedAt),
+            createdBy = requireNotNull(createdBy),
+            updatedBy = requireNotNull(updatedBy),
         )
 }

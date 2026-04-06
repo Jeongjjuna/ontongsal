@@ -3,8 +3,7 @@ package yjh.ontongsal.restapi.adpater.web.dto
 import yjh.ontongsal.restapi.domain.ArticleContent
 import yjh.ontongsal.restapi.domain.ArticleTitle
 
-data class WriteArticleRequest(
-    val boardId: Long,
+data class UpdateArticleRequest(
     val title: String,
     val content: String,
 ) {
