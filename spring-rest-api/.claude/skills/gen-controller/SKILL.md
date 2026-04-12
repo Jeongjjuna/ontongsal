@@ -28,9 +28,9 @@ adapter       ← Web + JPA 구현체
 app           ← 부트스트랩 (실행 진입점, 테스트 위치)
 ```
 
-- Controller 위치: `adapter/src/main/kotlin/yjh/ontongsal/restapi/adpater/web/`
-- DTO 위치: `adapter/src/main/kotlin/yjh/ontongsal/restapi/adpater/web/dto/`
-- ControllerTest 위치: `app/src/test/kotlin/yjh/ontongsal/restapi/adpater/web/`
+- Controller 위치: `adapter/src/main/kotlin/yjh/ontongsal/restapi/adapter/web/`
+- DTO 위치: `adapter/src/main/kotlin/yjh/ontongsal/restapi/adapter/web/dto/`
+- ControllerTest 위치: `app/src/test/kotlin/yjh/ontongsal/restapi/adapter/web/`
 
 ---
 
@@ -249,7 +249,7 @@ class CommentControllerTest(
 ### Controller 규칙
 
 1. **클래스명**: `{Domain}Controller`
-2. **패키지**: `yjh.ontongsal.restapi.adpater.web`
+2. **패키지**: `yjh.ontongsal.restapi.adapter.web`
 3. **`@RestController`** 어노테이션 사용
 4. UseCase를 생성자 주입
 5. **HTTP 메서드 매핑**:
@@ -278,7 +278,7 @@ class CommentControllerTest(
 ### ControllerTest 규칙
 
 1. **클래스명**: `{Domain}ControllerTest`
-2. **위치**: `app/src/test/kotlin/yjh/ontongsal/restapi/adpater/web/`
+2. **위치**: `app/src/test/kotlin/yjh/ontongsal/restapi/adapter/web/`
 3. **어노테이션**: `@DisplayName("[RestDocs] - {도메인 한글명}")`, `@WebMvcTest({Domain}Controller::class)`, `@AutoConfigureRestDocs(outputDir = "build/generated-snippets")`
 4. `DescribeSpec` 상속 (Kotest)
 5. `@MockkBean`으로 UseCase Mock 주입
@@ -295,8 +295,8 @@ class CommentControllerTest(
 
 1. `$ARGUMENTS` 경로의 UseCase 파일을 **Read** 툴로 읽는다
 2. UseCase의 메서드 시그니처를 분석하여 필요한 HTTP 엔드포인트를 파악한다
-3. `adapter/src/main/kotlin/yjh/ontongsal/restapi/adpater/web/dto/` 경로에서 **Glob**으로 기존 DTO 파일 확인
+3. `adapter/src/main/kotlin/yjh/ontongsal/restapi/adapter/web/dto/` 경로에서 **Glob**으로 기존 DTO 파일 확인
 4. 존재하지 않는 DTO가 있으면 생성한다
-5. Controller 파일을 `adapter/src/main/kotlin/yjh/ontongsal/restapi/adpater/web/` 에 **Write**로 생성한다
-6. ControllerTest 파일을 `app/src/test/kotlin/yjh/ontongsal/restapi/adpater/web/` 에 **Write**로 생성한다
+5. Controller 파일을 `adapter/src/main/kotlin/yjh/ontongsal/restapi/adapter/web/` 에 **Write**로 생성한다
+6. ControllerTest 파일을 `app/src/test/kotlin/yjh/ontongsal/restapi/adapter/web/` 에 **Write**로 생성한다
 7. 생성한 파일 목록과 각 엔드포인트를 요약하여 사용자에게 보고한다

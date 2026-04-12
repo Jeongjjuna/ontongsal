@@ -11,6 +11,7 @@ springmockk            = "4.0.2"
 spring-restdocs        = "3.0.5"
 restdocs-api-spec      = "0.19.4"
 springdoc-openapi      = "2.8.5"
+archunit               = "1.4.1"
 
 [plugins]
 kotlin-jvm                   = { id = "org.jetbrains.kotlin.jvm",           version.ref = "kotlin" }
@@ -54,3 +55,4 @@ kotest-extensions-spring       = { module = "io.kotest.extensions:kotest-extensi
 springmockk                    = { module = "com.ninja-squad:springmockk",                   version.ref = "springmockk" }
 restdocs-api-spec-mockmvc      = { module = "com.epages:restdocs-api-spec-mockmvc",          version.ref = "restdocs-api-spec" }
 springdoc-openapi-webmvc       = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
+archunit-junit5                = { module = "com.tngtech.archunit:archunit-junit5",              version.ref = "archunit" }

@@ -52,6 +52,7 @@ dependencies {
     testImplementation(libs.kotest.extensions.spring)
     testImplementation(libs.springmockk)
     testImplementation(libs.jackson.module.kotlin)
+    testImplementation(libs.archunit.junit5)
     asciidoctorExt(libs.spring.restdocs.asciidoctor)
 }
 
