@@ -19,3 +19,23 @@ CREATE TABLE articles
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='게시글 테이블';
+
+CREATE TABLE comments
+(
+    comment_id BIGINT      NOT NULL COMMENT '댓글 PK',
+    article_id BIGINT      NOT NULL COMMENT '게시글 ID',
+    author_id  BIGINT      NOT NULL COMMENT '작성자 사용자 ID',
+    content    TEXT        NOT NULL COMMENT '댓글 내용',
+    status     VARCHAR(20) NOT NULL COMMENT '댓글 상태 (ACTIVE / DELETED)',
+    created_at TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 시간',
+    created_by VARCHAR(50) NOT NULL COMMENT '생성자',
+    updated_at TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정 시간',
+    updated_by VARCHAR(50) NOT NULL COMMENT '수정자',
+
+    PRIMARY KEY (comment_id),
+
+    INDEX idx_article_id_comment_id (article_id ASC, comment_id DESC)
+
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='댓글 테이블';
