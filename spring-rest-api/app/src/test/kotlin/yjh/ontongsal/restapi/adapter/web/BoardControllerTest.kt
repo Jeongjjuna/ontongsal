@@ -11,7 +11,6 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
@@ -24,6 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import yjh.ontongsal.restapi.application.usecase.BoardUseCase
 import yjh.ontongsal.restapi.domain.*
+import yjh.ontongsal.restapi.domain.support.Page
 import java.time.Instant
 
 @DisplayName("[RestDocs] - 게시판")
@@ -41,7 +41,6 @@ class BoardControllerTest(
     val fixedNow = Instant.parse("2024-01-01T00:00:00Z")
     val stubBoard = Board(
         id = 1L,
-        managerId = 100L,
         name = BoardName("테스트 게시판"),
         status = BoardStatus.ACTIVE,
         auditInfo = AuditInfo(createdAt = fixedNow, createdBy = "관리자", updatedAt = fixedNow, updatedBy = "관리자"),
@@ -49,7 +48,7 @@ class BoardControllerTest(
 
     describe("POST : /v1/admin/boards") {
         context("게시판 생성 요청을 하면") {
-            every { boardUseCase.create(any<Actor>(), any<BoardName>()) } returns 1L
+            every { boardUseCase.create(any<BoardName>()) } returns 1L
 
             it("201 Created - Location 헤더와 함께 생성 성공") {
                 val body = mapOf("name" to "테스트 게시판")
@@ -93,7 +92,7 @@ class BoardControllerTest(
 
     describe("PUT : /v1/admin/boards/{id}") {
         context("게시판 수정 요청을 하면") {
-            every { boardUseCase.update(any<Actor>(), any<TargetId>(), any<BoardName>()) } returns 1L
+            every { boardUseCase.update(any<TargetId>(), any<BoardName>()) } returns 1L
 
             it("201 Created - Location 헤더와 함께 수정 성공") {
                 val body = mapOf("name" to "수정된 게시판")
@@ -140,7 +139,7 @@ class BoardControllerTest(
 
     describe("DELETE : /v1/admin/boards/{id}") {
         context("게시판 삭제 요청을 하면") {
-            every { boardUseCase.delete(any<Actor>(), any<TargetId>()) } just Runs
+            every { boardUseCase.delete(any<TargetId>()) } just Runs
 
             it("204 No Content - 삭제 성공") {
                 mockMvc.perform(delete("/v1/admin/boards/{id}", 1L))
@@ -153,7 +152,7 @@ class BoardControllerTest(
                                 ResourceSnippetParameters.builder()
                                     .tags("게시판")
                                     .summary("게시판 삭제")
-                                    .description("게시판을 삭제합니다. (논리 삭제, 어드민 전용)")
+                                    .description("게시판을 비활성화합니다. (어드민 전용)")
                                     .pathParameters(
                                         parameterWithName("id").description("게시판 ID")
                                     )
@@ -177,6 +176,7 @@ class BoardControllerTest(
                     .andExpect(jsonPath("$.code").value(0))
                     .andExpect(jsonPath("$.details.id").value(1))
                     .andExpect(jsonPath("$.details.name").value("테스트 게시판"))
+                    .andExpect(jsonPath("$.details.status").value("ACTIVE"))
                     .andDo(
                         document(
                             "board-get",
@@ -193,9 +193,8 @@ class BoardControllerTest(
                                         fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
                                         fieldWithPath("details").type(JsonFieldType.OBJECT).description("응답 데이터"),
                                         fieldWithPath("details.id").type(JsonFieldType.NUMBER).description("게시판 ID"),
-                                        fieldWithPath("details.managerId").type(JsonFieldType.NUMBER).description("관리자 사용자 ID"),
                                         fieldWithPath("details.name").type(JsonFieldType.STRING).description("게시판 이름"),
-                                        fieldWithPath("details.status").type(JsonFieldType.STRING).description("게시판 상태 (ACTIVE / DELETED)"),
+                                        fieldWithPath("details.status").type(JsonFieldType.STRING).description("게시판 상태 (ACTIVE / INACTIVE)"),
                                         fieldWithPath("details.createdAt").type(JsonFieldType.STRING).description("생성일시 (ISO 8601)"),
                                         fieldWithPath("details.updatedAt").type(JsonFieldType.STRING).description("수정일시 (ISO 8601)"),
                                     )
@@ -209,16 +208,24 @@ class BoardControllerTest(
 
     describe("GET : /v1/admin/boards") {
         context("게시판 목록 조회 요청을 하면") {
-            every { boardUseCase.findAll() } returns listOf(stubBoard)
+            every {
+                boardUseCase.findAll(any<Int>(), any<Int>())
+            } returns Page(listOf(stubBoard), page = 0, size = 10, totalElements = 1L, totalPages = 1, hasNext = false)
 
-            it("200 OK - 게시판 목록을 반환한다") {
-                mockMvc.perform(get("/v1/admin/boards"))
+            it("200 OK - 페이지 단위 목록을 반환한다") {
+                mockMvc.perform(
+                    get("/v1/admin/boards")
+                        .param("page", "0")
+                        .param("pageSize", "10")
+                )
                     .andDo(print())
                     .andExpect(status().isOk)
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$.code").value(0))
-                    .andExpect(jsonPath("$.details[0].id").value(1))
-                    .andExpect(jsonPath("$.details[0].name").value("테스트 게시판"))
+                    .andExpect(jsonPath("$.details.content[0].id").value(1))
+                    .andExpect(jsonPath("$.details.content[0].name").value("테스트 게시판"))
+                    .andExpect(jsonPath("$.details.totalElements").value(1))
+                    .andExpect(jsonPath("$.details.hasNext").value(false))
                     .andDo(
                         document(
                             "board-list",
@@ -226,17 +233,26 @@ class BoardControllerTest(
                                 ResourceSnippetParameters.builder()
                                     .tags("게시판")
                                     .summary("게시판 목록 조회")
-                                    .description("전체 게시판 목록을 조회합니다. (어드민 전용)")
+                                    .description("전체 게시판 목록을 오프셋 페이징으로 조회합니다. (어드민 전용)")
+                                    .queryParameters(
+                                        parameterWithName("page").description("페이지 번호 (0부터 시작)"),
+                                        parameterWithName("pageSize").description("페이지당 게시판 수"),
+                                    )
                                     .responseFields(
                                         fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드 (0: 성공)"),
                                         fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
-                                        fieldWithPath("details[]").type(JsonFieldType.ARRAY).description("게시판 목록"),
-                                        fieldWithPath("details[].id").type(JsonFieldType.NUMBER).description("게시판 ID"),
-                                        fieldWithPath("details[].managerId").type(JsonFieldType.NUMBER).description("관리자 사용자 ID"),
-                                        fieldWithPath("details[].name").type(JsonFieldType.STRING).description("게시판 이름"),
-                                        fieldWithPath("details[].status").type(JsonFieldType.STRING).description("게시판 상태 (ACTIVE / DELETED)"),
-                                        fieldWithPath("details[].createdAt").type(JsonFieldType.STRING).description("생성일시 (ISO 8601)"),
-                                        fieldWithPath("details[].updatedAt").type(JsonFieldType.STRING).description("수정일시 (ISO 8601)"),
+                                        fieldWithPath("details").type(JsonFieldType.OBJECT).description("응답 데이터"),
+                                        fieldWithPath("details.content[]").type(JsonFieldType.ARRAY).description("게시판 목록"),
+                                        fieldWithPath("details.content[].id").type(JsonFieldType.NUMBER).description("게시판 ID"),
+                                        fieldWithPath("details.content[].name").type(JsonFieldType.STRING).description("게시판 이름"),
+                                        fieldWithPath("details.content[].status").type(JsonFieldType.STRING).description("게시판 상태 (ACTIVE / INACTIVE)"),
+                                        fieldWithPath("details.content[].createdAt").type(JsonFieldType.STRING).description("생성일시 (ISO 8601)"),
+                                        fieldWithPath("details.content[].updatedAt").type(JsonFieldType.STRING).description("수정일시 (ISO 8601)"),
+                                        fieldWithPath("details.page").type(JsonFieldType.NUMBER).description("현재 페이지 번호"),
+                                        fieldWithPath("details.size").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                                        fieldWithPath("details.totalElements").type(JsonFieldType.NUMBER).description("전체 게시판 수"),
+                                        fieldWithPath("details.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
+                                        fieldWithPath("details.hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부"),
                                     )
                                     .build()
                             )

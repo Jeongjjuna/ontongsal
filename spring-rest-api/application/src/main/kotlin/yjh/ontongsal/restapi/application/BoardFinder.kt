@@ -6,6 +6,7 @@ import yjh.ontongsal.restapi.domain.Board
 import yjh.ontongsal.restapi.domain.TargetId
 import yjh.ontongsal.restapi.domain.exception.AppException
 import yjh.ontongsal.restapi.domain.exception.ErrorCode
+import yjh.ontongsal.restapi.domain.support.Page
 
 @Component
 class BoardFinder(
@@ -17,7 +18,7 @@ class BoardFinder(
             ?: throw AppException.NotFound(ErrorCode.BOARD_NOT_FOUND, "게시판을 찾을 수 없습니다. [$boardId]")
     }
 
-    fun findAll(): List<Board> {
-        return boardRepository.findAll()
+    fun findAll(page: Int, pageSize: Int): Page<Board> {
+        return boardRepository.findAll(page, pageSize)
     }
 }

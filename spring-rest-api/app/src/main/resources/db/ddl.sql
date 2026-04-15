@@ -1,3 +1,19 @@
+CREATE TABLE boards
+(
+    board_id   BIGINT      NOT NULL COMMENT '게시판 PK',
+    name       VARCHAR(50) NOT NULL COMMENT '게시판 이름',
+    status     VARCHAR(20) NOT NULL COMMENT '게시판 상태 (ACTIVE / INACTIVE)',
+    created_at TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 시간',
+    created_by VARCHAR(50) NOT NULL COMMENT '생성자',
+    updated_at TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정 시간',
+    updated_by VARCHAR(50) NOT NULL COMMENT '수정자',
+
+    PRIMARY KEY (board_id)
+
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='게시판 테이블';
+
 CREATE TABLE articles
 (
     article_id BIGINT        NOT NULL COMMENT '게시글 PK',

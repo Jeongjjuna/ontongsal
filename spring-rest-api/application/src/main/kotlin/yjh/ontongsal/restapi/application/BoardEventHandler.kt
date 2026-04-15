@@ -3,7 +3,6 @@ package yjh.ontongsal.restapi.application
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 import yjh.ontongsal.restapi.application.port.EventPublisher
-import yjh.ontongsal.restapi.domain.Actor
 import yjh.ontongsal.restapi.domain.Board
 import yjh.ontongsal.restapi.domain.TargetId
 import yjh.ontongsal.restapi.domain.event.BoardCreatedEvent
@@ -16,13 +15,13 @@ class BoardEventHandler(
     private val eventPublisher: EventPublisher,
 ) {
 
-    fun created(actor: Actor, board: Board) {
-        eventPublisher.publish(BoardCreatedEvent.of(actor, board))
+    fun created(board: Board) {
+        eventPublisher.publish(BoardCreatedEvent.of(board))
         logger.debug { "board created event published : boardId=${board.id}" }
     }
 
-    fun updated(actor: Actor, boardId: TargetId, board: Board) {
-        eventPublisher.publish(BoardModifiedEvent.of(actor, boardId, board))
+    fun updated(boardId: TargetId, board: Board) {
+        eventPublisher.publish(BoardModifiedEvent.of(boardId, board))
         logger.debug { "board modified event published : boardId=${board.id}" }
     }
 }

@@ -2,7 +2,7 @@ package yjh.ontongsal.restapi.domain
 
 enum class BoardStatus {
     ACTIVE,
-    DELETED;
+    INACTIVE;
 
-    fun isDeleted() = this == DELETED
+    fun isInactive() = this == INACTIVE
 }

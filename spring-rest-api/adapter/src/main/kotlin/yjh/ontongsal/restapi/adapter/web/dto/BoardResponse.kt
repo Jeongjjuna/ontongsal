@@ -6,7 +6,6 @@ import java.time.Instant
 
 data class BoardResponse(
     val id: Long,
-    val managerId: Long,
     val name: String,
     val status: BoardStatus,
     val createdAt: Instant,
@@ -16,7 +15,6 @@ data class BoardResponse(
         fun of(board: Board): BoardResponse {
             return BoardResponse(
                 id = board.id,
-                managerId = board.managerId,
                 name = board.name.contentText,
                 status = board.status,
                 createdAt = board.auditInfo.createdAt,

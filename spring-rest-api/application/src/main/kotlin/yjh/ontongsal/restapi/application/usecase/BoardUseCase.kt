@@ -1,15 +1,15 @@
 package yjh.ontongsal.restapi.application.usecase
 
-import yjh.ontongsal.restapi.domain.Actor
 import yjh.ontongsal.restapi.domain.Board
 import yjh.ontongsal.restapi.domain.BoardName
 import yjh.ontongsal.restapi.domain.TargetId
+import yjh.ontongsal.restapi.domain.support.Page
 
 interface BoardUseCase {
-    fun create(actor: Actor, boardName: BoardName): Long
-    fun update(actor: Actor, boardId: TargetId, boardName: BoardName): Long
-    fun delete(actor: Actor, boardId: TargetId)
+    fun create(boardName: BoardName): Long
+    fun update(boardId: TargetId, boardName: BoardName): Long
+    fun delete(boardId: TargetId)
 
     fun findBoard(boardId: TargetId): Board
-    fun findAll(): List<Board>
+    fun findAll(page: Int, pageSize: Int): Page<Board>
 }
