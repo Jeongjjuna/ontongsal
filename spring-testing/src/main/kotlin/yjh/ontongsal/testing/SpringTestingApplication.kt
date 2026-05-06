@@ -1,4 +1,4 @@
-package yjh.ontongsal.test
+package yjh.ontongsal.testing
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
