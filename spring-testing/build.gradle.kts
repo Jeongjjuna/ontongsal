@@ -22,11 +22,17 @@ java {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("io.jsonwebtoken:jjwt-api:0.13.0")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.13.0")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.13.0")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+    implementation("io.github.oshai:kotlin-logging-jvm:8.0.01")
 
     runtimeOnly("com.mysql:mysql-connector-j") // 운영용
     runtimeOnly("com.h2database:h2")           // 로컬용

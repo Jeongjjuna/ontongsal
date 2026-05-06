@@ -1,13 +1,10 @@
-server:
-    port: 8080
-
 spring:
     application:
         name: testing
 
     config:
         activate:
-            on-profile: local
+            on-profile: test
 
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
