@@ -1,13 +1,13 @@
 package yjh.ontongsal.testing.application
 
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yjh.ontongsal.testing.common.exception.AppException
 import yjh.ontongsal.testing.common.exception.ErrorCode
+import yjh.ontongsal.testing.common.security.crypto.CredentialService
 import yjh.ontongsal.testing.common.security.jwt.JwtTokenProvider
-import yjh.ontongsal.testing.controller.dto.LoginRequest
-import yjh.ontongsal.testing.controller.dto.SignupRequest
+import yjh.ontongsal.testing.presentation.controller.dto.LoginRequest
+import yjh.ontongsal.testing.presentation.controller.dto.SignupRequest
 import yjh.ontongsal.testing.domain.UserEntity
 import yjh.ontongsal.testing.infrastructure.UserRepository
 import java.time.Duration
@@ -15,7 +15,7 @@ import java.time.Duration
 @Service
 class UserService(
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder,
+    private val credentialService: CredentialService,
     private val jwtTokenProvider: JwtTokenProvider,
 ) {
 
@@ -27,7 +27,8 @@ class UserService(
 
         val userEntity = UserEntity(
             email = request.email,
-            password = passwordEncoder.encode(request.password),
+            password = credentialService.hash(request.password),
+            phone = request.phone,
             role = request.role
         )
         return userRepository.save(userEntity).id
@@ -37,7 +38,7 @@ class UserService(
         val user = userRepository.findByEmail(request.email)
             ?: throw AppException.NotFound(ErrorCode.USER_NOT_FOUND)
 
-        if (!passwordEncoder.matches(request.password, user.password)) {
+        if (!credentialService.matches(request.password, user.password)) {
             throw AppException.Unauthorized(ErrorCode.INVALID_PASSWORD)
         }
 

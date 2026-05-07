@@ -44,3 +44,8 @@ springdoc:
 jwt:
     issuer: spring-testing-server
     secret_key: ZmFrZS1zZWNyZXQta2V5LWZvci1kZW1vLXVzZS0xMjM0NTY3ODkwMTIz # 최소 32바이트 이상, Base64 인코딩값을 추천한다.
+
+crypto:
+    encrypt:
+        password: test-password
+        salt: 5c0744940b5c369b

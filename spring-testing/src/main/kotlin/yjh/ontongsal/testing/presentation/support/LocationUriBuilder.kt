@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.controller.support
+package yjh.ontongsal.testing.presentation.support
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import java.net.URI

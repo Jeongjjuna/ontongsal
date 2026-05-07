@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.controller.dto
+package yjh.ontongsal.testing.presentation.controller.dto
 
 data class LoginRequest(
     val email: String,
