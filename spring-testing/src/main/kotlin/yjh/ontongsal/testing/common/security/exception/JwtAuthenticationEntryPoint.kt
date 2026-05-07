@@ -23,11 +23,11 @@ class JwtAuthenticationEntryPoint(
         response: HttpServletResponse,
         e: AuthenticationException,
     ) {
-        log.error { "[ERROR] ${e.message}" }
+        log.warn { "[ERROR] ${e.message}" }
 
         val responseBody = ErrorResponse(
             code = HttpStatus.UNAUTHORIZED.value(),
-            message = e.message ?: "Unknown error message",
+            message = HttpStatus.UNAUTHORIZED.reasonPhrase,
             details = listOf()
         )
 

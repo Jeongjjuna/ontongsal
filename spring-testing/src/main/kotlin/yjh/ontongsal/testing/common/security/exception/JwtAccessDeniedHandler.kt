@@ -22,7 +22,7 @@ class JwtAccessDeniedHandler(
         response: HttpServletResponse,
         e: AccessDeniedException,
     ) {
-        log.error { "[ERROR] ${e.message}" }
+        log.warn { "[ERROR] ${e.message}" }
 
         val responseBody = ErrorResponse(
             code = HttpStatus.FORBIDDEN.value(),

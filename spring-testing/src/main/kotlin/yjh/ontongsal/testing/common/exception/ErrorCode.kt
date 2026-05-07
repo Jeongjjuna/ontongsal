@@ -6,7 +6,8 @@ enum class ErrorCode(
 ) {
     // User (1000~1099)
     USER_NOT_FOUND(1000, "사용자를 찾을 수 없습니다"),
-    USER_CONFLICT(1001, "사용자 충돌 발생"),
+    USER_CONFLICT(1001, "사용자가 이미 존재합니다."),
+    INVALID_PASSWORD(1002, "비밀번호가 올바르지 않습니다."),
 
     // Post (1100~1199)
     ARTICLE_NOT_FOUND(1100, "게시글을 찾을 수 없습니다"),

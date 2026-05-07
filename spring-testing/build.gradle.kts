@@ -32,10 +32,12 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
     implementation("io.github.oshai:kotlin-logging-jvm:8.0.01")
 
-    runtimeOnly("com.mysql:mysql-connector-j") // 운영용
-    runtimeOnly("com.h2database:h2")           // 로컬용
+    implementation("com.mysql:mysql-connector-j") // 운영용
+    implementation("com.h2database:h2")           // 로컬용
 
     // springboot 통합 테스트 라이브러리 -> Junit5, AssertJ, Mockito 등 다양한 라이브러리 제공
     testImplementation("org.springframework.boot:spring-boot-starter-test")

@@ -36,7 +36,9 @@ class SecurityConfig(
             }
             .cors { }
             .authorizeHttpRequests {
-                it.requestMatchers(HttpMethod.POST, "/v1/auth").permitAll()
+                it
+                    .requestMatchers(HttpMethod.POST, "/v1/users").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/v1/users/login").permitAll()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
