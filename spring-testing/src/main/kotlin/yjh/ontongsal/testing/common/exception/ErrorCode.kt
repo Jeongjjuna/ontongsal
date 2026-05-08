@@ -28,5 +28,9 @@ enum class ErrorCode(
     BOARD_CONFLICT(1301, "게시판 충돌 발생"),
     BOARD_DELETED(1302, "삭제된 게시판입니다."),
     BOARD_MODIFY_FORBIDDEN(1303, "관리자가 아니면 게시판을 수정할 수 없습니다."),
-    BOARD_DELETE_FORBIDDEN(1304, "관리자가 아니면 게시판을 삭제할 수 없습니다.")
+    BOARD_DELETE_FORBIDDEN(1304, "관리자가 아니면 게시판을 삭제할 수 없습니다."),
+
+    // Todo (1400~1499)
+    TODO_NOT_FOUND(1400, "할 일을 찾을 수 없습니다"),
+    TODO_FORBIDDEN(1401, "해당 할 일에 대한 권한이 없습니다"),
 }
