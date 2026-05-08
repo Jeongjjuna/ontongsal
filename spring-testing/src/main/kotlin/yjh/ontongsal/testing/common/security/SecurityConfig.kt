@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import yjh.ontongsal.testing.common.security.crypto.CryptoProperties
 import yjh.ontongsal.testing.common.security.exception.JwtAccessDeniedHandler
 import yjh.ontongsal.testing.common.security.exception.JwtAuthenticationEntryPoint
-import yjh.ontongsal.testing.common.security.filter.JwtAuthenticationFilter
+import yjh.ontongsal.testing.common.security.filter.JwtSecurityContextFilter
 
 @EnableConfigurationProperties(CryptoProperties::class)
 @Configuration
@@ -27,7 +27,7 @@ class SecurityConfig(
     private val cryptoProperties: CryptoProperties,
     private val authenticationEntryPoint: JwtAuthenticationEntryPoint,
     private val accessDeniedHandler: JwtAccessDeniedHandler,
-    private val jwtAuthenticationFilter: JwtAuthenticationFilter,
+    private val jwtSecurityContextFilter: JwtSecurityContextFilter,
 ) {
 
     // 단방향 (비밀번호)
@@ -67,7 +67,7 @@ class SecurityConfig(
                     .requestMatchers(HttpMethod.POST, "/v1/users/login").permitAll()
                     .anyRequest().authenticated()
             }
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(jwtSecurityContextFilter, UsernamePasswordAuthenticationFilter::class.java)
             .exceptionHandling {
                 it.authenticationEntryPoint(authenticationEntryPoint)
                 it.accessDeniedHandler(accessDeniedHandler)

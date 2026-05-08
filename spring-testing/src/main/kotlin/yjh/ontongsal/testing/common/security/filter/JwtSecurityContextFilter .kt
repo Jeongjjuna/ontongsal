@@ -13,10 +13,10 @@ import yjh.ontongsal.testing.common.security.jwt.JwtTokenProvider
 private val log = KotlinLogging.logger {}
 
 /**
- * Authorization 의 jwt token 을 통해 SecurityContextHolder 를 생성해주는 필터입니다.
+ * Authorization 의 Authorization 헤더 정보가 있다면 SecurityContextHolder 에 인증 정보를 담아준다.
  */
 @Component
-class JwtAuthenticationFilter(
+class JwtSecurityContextFilter(
     private val jwtTokenProvider: JwtTokenProvider,
 ) : OncePerRequestFilter() {
 
