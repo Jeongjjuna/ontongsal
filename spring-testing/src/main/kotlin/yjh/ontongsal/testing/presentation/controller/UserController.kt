@@ -18,7 +18,9 @@ class UserController(
 ) {
 
     @PostMapping
-    fun signup(@RequestBody request: SignupRequest): ResponseEntity<Unit> {
+    fun signup(
+        @RequestBody request: SignupRequest,
+    ): ResponseEntity<Unit> {
         val successId = userService.signup(request)
         return ResponseEntity
             .created(LocationUriBuilder.fromCurrent(successId))
@@ -26,7 +28,9 @@ class UserController(
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody request: LoginRequest): ResponseEntity<LoginResponse> {
+    fun login(
+        @RequestBody request: LoginRequest,
+    ): ResponseEntity<LoginResponse> {
         val token = userService.login(request)
         return ResponseEntity.ok(LoginResponse(accessToken = token))
     }

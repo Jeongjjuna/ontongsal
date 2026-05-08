@@ -6,10 +6,10 @@ import yjh.ontongsal.testing.common.exception.AppException
 import yjh.ontongsal.testing.common.exception.ErrorCode
 import yjh.ontongsal.testing.common.security.crypto.CredentialService
 import yjh.ontongsal.testing.common.security.jwt.JwtTokenProvider
-import yjh.ontongsal.testing.presentation.controller.dto.LoginRequest
-import yjh.ontongsal.testing.presentation.controller.dto.SignupRequest
 import yjh.ontongsal.testing.domain.UserEntity
 import yjh.ontongsal.testing.infrastructure.UserRepository
+import yjh.ontongsal.testing.presentation.controller.dto.LoginRequest
+import yjh.ontongsal.testing.presentation.controller.dto.SignupRequest
 import java.time.Duration
 
 @Service

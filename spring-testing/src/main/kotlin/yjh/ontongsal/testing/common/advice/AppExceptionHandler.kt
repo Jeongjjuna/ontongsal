@@ -1,10 +1,13 @@
 package yjh.ontongsal.testing.common.advice
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException
+import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.ConstraintViolationException
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -90,6 +93,7 @@ class AppExceptionHandler {
             )
     }
 
+    // 4. @RequestParam이 required=true 위반
     @ExceptionHandler(value = [MissingServletRequestParameterException::class])
     fun handleMissingParam(
         e: MissingServletRequestParameterException,
@@ -100,6 +104,36 @@ class AppExceptionHandler {
         val error = ErrorDetail(
             field = e.parameterName,
             reason = "required parameter is missing"
+        )
+
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(
+                ErrorResponse(
+                    code = HttpStatus.BAD_REQUEST.value(),
+                    message = HttpStatus.BAD_REQUEST.reasonPhrase,
+                    details = listOf(error)
+                )
+            )
+    }
+
+    // 4. HttpMessageNotReadableException (요청 바디 파싱 실패)
+    @ExceptionHandler(value = [HttpMessageNotReadableException::class])
+    fun handleHttpMessageNotReadableException(
+        e: HttpMessageNotReadableException,
+    ): ResponseEntity<ErrorResponse> {
+
+        logger.warn { "Http Message Not Readable" }
+
+        val reason = when (e.cause) {
+            is InvalidFormatException -> "invalid format"
+            is MismatchedInputException -> "missing or invalid field"
+            else -> "unreadable request body"
+        }
+
+        val error = ErrorDetail(
+            field = "requestBody",
+            reason = reason
         )
 
         return ResponseEntity

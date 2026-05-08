@@ -6,5 +6,5 @@ data class SignupRequest(
     val email: String,
     val password: String,
     val phone: String,
-    val role: UserRole = UserRole.USER,
+    val role: UserRole,
 )
