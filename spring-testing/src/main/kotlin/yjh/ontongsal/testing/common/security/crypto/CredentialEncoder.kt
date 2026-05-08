@@ -4,7 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component
-class CredentialService(
+class CredentialEncoder(
     private val passwordEncoder: PasswordEncoder,
 ) {
     fun hash(raw: String): String =

@@ -29,19 +29,27 @@ class TodoController(
     fun findById(
         @AuthenticationPrincipal userDetails: TestingUserDetails,
         @PathVariable id: Long,
-    ): TodoResponse = todoService.findById(userDetails.userId, id)
+    ): ResponseEntity<TodoResponse> {
+        val todo = todoService.findById(userDetails.userId, id)
+        return ResponseEntity.ok(TodoResponse.from(todo))
+    }
 
     @GetMapping
     fun findAll(
         @AuthenticationPrincipal userDetails: TestingUserDetails,
-    ): List<TodoResponse> = todoService.findAll(userDetails.userId)
+    ): ResponseEntity<List<TodoResponse>> {
+        val todos = todoService.findAll(userDetails.userId)
+        return ResponseEntity.ok(todos.map(TodoResponse::from))
+    }
 
     @PutMapping("/{id}")
     fun update(
         @AuthenticationPrincipal userDetails: TestingUserDetails,
         @PathVariable id: Long,
         @RequestBody @Valid request: UpdateTodoRequest,
-    ): TodoResponse = todoService.update(userDetails.userId, id, request)
+    ): TodoResponse {
+        return todoService.update(userDetails.userId, id, request)
+    }
 
     @DeleteMapping("/{id}")
     fun delete(
