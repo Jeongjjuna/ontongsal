@@ -21,6 +21,8 @@ java {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -34,6 +36,7 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
+    implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
     implementation("io.github.oshai:kotlin-logging-jvm:8.0.01")
 
     implementation("com.mysql:mysql-connector-j") // 운영용

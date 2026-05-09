@@ -10,6 +10,7 @@ import yjh.ontongsal.testing.presentation.controller.dto.UpdateTodoRequest
 @Service
 class TodoService(
     private val transaction: TransactionRunner,
+    private val todoCache: TodoCache,
     private val todoFinder: TodoFinder,
     private val todoCreator: TodoCreator,
     private val todoRemover: TodoRemover,
@@ -22,7 +23,7 @@ class TodoService(
     }
 
     fun findById(userId: Long, todoId: Long): TodoEntity {
-        return todoFinder.getTodo(todoId)
+        return todoCache.get(todoId)
             .also { it.validateOwner(userId) }
     }
 

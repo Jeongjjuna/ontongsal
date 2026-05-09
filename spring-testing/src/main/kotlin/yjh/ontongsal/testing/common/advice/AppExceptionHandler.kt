@@ -25,7 +25,11 @@ class AppExceptionHandler {
     @ExceptionHandler(value = [AppException::class])
     fun handleAppException(e: AppException): ResponseEntity<ErrorResponse> {
         val origin = e.stackTrace.firstOrNull()
-        logger.warn { "AppException : (${e.code}) ${e.message} \n- $origin" }
+        val location = origin?.let {
+            "${it.methodName}(${it.fileName}:${it.lineNumber})"
+        }
+
+        logger.warn { "AppException : (${e.code}) ${e.message} - $location" }
 
         val response = ErrorResponse(
             code = e.code,
