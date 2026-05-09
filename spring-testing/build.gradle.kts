@@ -50,9 +50,8 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
 
     // testcontainer 라이브러리
-    testImplementation("org.springframework.boot:spring-boot-testcontainers")
-    testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("org.testcontainers:mysql")
+    testImplementation("org.testcontainers:testcontainers:2.0.5")
+    testImplementation("org.testcontainers:mysql:1.21.4")
 
     // kotlin 언어로 junit5를 사용할 수 있게 제공
     // 어떻게? -> ex) 코틀린의 nullable 특징을 활용할 수 있는 코틀린 Junit 메서드 제공

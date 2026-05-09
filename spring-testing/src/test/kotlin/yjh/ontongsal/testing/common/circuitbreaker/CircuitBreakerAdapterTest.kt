@@ -7,12 +7,14 @@ import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import java.time.Duration
 import kotlin.test.Test
 
 class BusinessException : RuntimeException()
 class ExternalCallException : RuntimeException()
 
+@DisplayName("[단위테스트] CircuitBreakerAdapter")
 class CircuitBreakerAdapterTest {
 
     private lateinit var registry: CircuitBreakerRegistry

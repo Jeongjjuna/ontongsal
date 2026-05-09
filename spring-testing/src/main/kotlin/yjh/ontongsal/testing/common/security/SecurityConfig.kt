@@ -22,7 +22,6 @@ import yjh.ontongsal.testing.common.security.filter.JwtSecurityContextFilter
 
 @EnableConfigurationProperties(CryptoProperties::class)
 @Configuration
-@Profile("local")
 class SecurityConfig(
     private val cryptoProperties: CryptoProperties,
     private val authenticationEntryPoint: JwtAuthenticationEntryPoint,
@@ -49,6 +48,7 @@ class SecurityConfig(
         }
     }
 
+    @Profile("local", "test")
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http

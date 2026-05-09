@@ -2,20 +2,20 @@ package yjh.ontongsal.testing.common.security.jwt
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.Authentication
-import org.springframework.test.context.ActiveProfiles
 import yjh.ontongsal.testing.common.security.TestingUserDetails
+import yjh.ontongsal.testing.config.IntegrationTest
 import java.time.Duration
 import kotlin.test.Test
 
-@ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DisplayName("[통합테스트] JwtTokenProvider")
 class JwtTokenProviderTest @Autowired constructor(
-    private val jwtTokenProvider: JwtTokenProvider
-) {
+    private val jwtTokenProvider: JwtTokenProvider,
+) : IntegrationTest() {
 
     @Test
     fun `토큰 생성 성공`() {
