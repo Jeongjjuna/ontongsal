@@ -33,6 +33,7 @@ class JwtSecurityContextFilter(
                 context.authentication = jwtTokenProvider.getAuthentication(token)
                 SecurityContextHolder.setContext(context)
             } catch (e: InvalidJwtException) {
+
                 log.debug(e) { "Invalid JWT token" }
                 // 인증 실패 → 그냥 통과 (401은 EntryPoint가 처리)
             } catch (e: Exception) {

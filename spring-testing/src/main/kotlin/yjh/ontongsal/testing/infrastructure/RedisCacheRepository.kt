@@ -8,7 +8,7 @@ import yjh.ontongsal.testing.common.exception.SerializationException
 import yjh.ontongsal.testing.common.redis.DataSerializer
 import java.time.Duration
 
-private val logger = KotlinLogging.logger {}
+private val log = KotlinLogging.logger {}
 
 /**
  * 캐시 Repository 이므로, 캐시조회가 예외로 실패하더라도 null 값을 던진다.
@@ -27,7 +27,7 @@ class RedisCacheRepository(
                 redisTemplate.opsForValue().get(key)
             }
         } catch (e: Exception) {
-            logger.warn(e) { "Redis Cache GET failed key=$key" }
+            log.warn(e) { "Redis Cache GET failed key=$key" }
             return null
         }
 
@@ -38,7 +38,7 @@ class RedisCacheRepository(
         return try {
             serializer.deserialize(json, clazz)
         } catch (e: SerializationException) {
-            logger.warn(e) { "Cache deserialize failed key=$key" }
+            log.warn(e) { "Cache deserialize failed key=$key" }
             delete(key)
             null
         }
@@ -48,7 +48,7 @@ class RedisCacheRepository(
         val json = try {
             serializer.serialize(value)
         } catch (e: SerializationException) {
-            logger.warn(e) { "Cache serialize failed key=$key" }
+            log.warn(e) { "Cache serialize failed key=$key" }
             return
         }
 
@@ -57,7 +57,7 @@ class RedisCacheRepository(
                 redisTemplate.opsForValue().set(key, json, ttl)
             }
         } catch (e: Exception) {
-            logger.warn(e) { "Redis Cache SET failed key=$key" }
+            log.warn(e) { "Redis Cache SET failed key=$key" }
             // cache write 실패는 무시 (best effort)
         }
     }
@@ -68,7 +68,7 @@ class RedisCacheRepository(
                 redisTemplate.delete(key)
             }
         } catch (e: Exception) {
-            logger.warn(e) { "Redis Cache DELETE failed key=$key" }
+            log.warn(e) { "Redis Cache DELETE failed key=$key" }
             // eviction 실패도 서비스 영향 없음
         }
     }

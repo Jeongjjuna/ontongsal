@@ -17,7 +17,7 @@ import yjh.ontongsal.testing.common.dto.ErrorDetail
 import yjh.ontongsal.testing.common.dto.ErrorResponse
 import yjh.ontongsal.testing.common.exception.AppException
 
-private val logger = KotlinLogging.logger {}
+private val log = KotlinLogging.logger {}
 
 @RestControllerAdvice
 class AppExceptionHandler {
@@ -29,7 +29,7 @@ class AppExceptionHandler {
             "${it.methodName}(${it.fileName}:${it.lineNumber})"
         }
 
-        logger.warn { "AppException : (${e.code}) ${e.message} - $location" }
+        log.warn { "AppException : (${e.code}) ${e.message} - $location" }
 
         val response = ErrorResponse(
             code = e.code,
@@ -51,7 +51,7 @@ class AppExceptionHandler {
         e: MethodArgumentNotValidException,
     ): ResponseEntity<ErrorResponse> {
 
-        logger.warn { "Validation Exception" }
+        log.warn { "Validation Exception" }
 
         val errors = e.bindingResult.fieldErrors.map {
             ErrorDetail(
@@ -77,7 +77,7 @@ class AppExceptionHandler {
         e: ConstraintViolationException,
     ): ResponseEntity<ErrorResponse> {
 
-        logger.warn { "Constraint Violation" }
+        log.warn { "Constraint Violation" }
 
         val errors = e.constraintViolations.map {
             ErrorDetail(
@@ -103,7 +103,7 @@ class AppExceptionHandler {
         e: MissingServletRequestParameterException,
     ): ResponseEntity<ErrorResponse> {
 
-        logger.warn { "Missing Request Param" }
+        log.warn { "Missing Request Param" }
 
         val error = ErrorDetail(
             field = e.parameterName,
@@ -127,7 +127,7 @@ class AppExceptionHandler {
         e: HttpMessageNotReadableException,
     ): ResponseEntity<ErrorResponse> {
 
-        logger.warn { "Http Message Not Readable" }
+        log.warn { "Http Message Not Readable" }
 
         val reason = when (e.cause) {
             is InvalidFormatException -> "invalid format"
@@ -163,7 +163,7 @@ class AppExceptionHandler {
         e: DataIntegrityViolationException,
     ): ResponseEntity<ErrorResponse> {
 
-        logger.error(e) { "Data Integrity Violation" }
+        log.error(e) { "Data Integrity Violation" }
 
         return ResponseEntity
             .status(HttpStatus.CONFLICT)
@@ -178,7 +178,7 @@ class AppExceptionHandler {
 
     @ExceptionHandler(value = [Exception::class])
     fun handleException(e: Exception, request: WebRequest): ResponseEntity<ErrorResponse> {
-        logger.error(e) { "Exception : ${e.message}" }
+        log.error(e) { "Exception : ${e.message}" }
 
         val response = ErrorResponse(
             code = HttpStatus.INTERNAL_SERVER_ERROR.value(),

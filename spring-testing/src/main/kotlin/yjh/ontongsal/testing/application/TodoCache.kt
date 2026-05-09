@@ -14,7 +14,7 @@ import java.time.Duration
  * ex) cache-aside 패턴 적용
  *
  */
-private val logger = KotlinLogging.logger {}
+private val log = KotlinLogging.logger {}
 
 @Component
 class TodoCache(
@@ -31,7 +31,7 @@ class TodoCache(
         cacheRepository.get(key, TodoEntity::class.java)
             ?.let { return it }
 
-        logger.debug { "Cache Miss key=$key" }
+        log.debug { "Cache Miss key=$key" }
 
         // 2. Cache Miss (or Redis 장애)
         val todo = todoRepository.findById(id)

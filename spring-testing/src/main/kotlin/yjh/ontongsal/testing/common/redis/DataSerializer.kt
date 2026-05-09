@@ -9,7 +9,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 import yjh.ontongsal.testing.common.exception.SerializationException
 
-private val logger = KotlinLogging.logger {}
+private val log = KotlinLogging.logger {}
 
 @Component
 class DataSerializer {
@@ -29,7 +29,7 @@ class DataSerializer {
         return try {
             objectMapper.writeValueAsString(obj)
         } catch (e: Exception) {
-            logger.error(e) { "serialize failed: type=${obj::class.simpleName}" }
+            log.error(e) { "serialize failed: type=${obj::class.simpleName}" }
             // TODO : 매트릭 or 알림
             throw SerializationException("Serialization failed", e)
         }
@@ -44,7 +44,7 @@ class DataSerializer {
         return try {
             objectMapper.readValue(json, clazz)
         } catch (e: Exception) {
-            logger.error(e) { "deserialize failed: json=$json, target=${clazz.simpleName}" }
+            log.error(e) { "deserialize failed: json=$json, target=${clazz.simpleName}" }
             // TODO : 매트릭 or 알림
             throw SerializationException("Deserialization failed", e)
         }
