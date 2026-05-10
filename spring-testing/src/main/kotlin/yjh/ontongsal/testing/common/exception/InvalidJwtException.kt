@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.common.security.jwt
+package yjh.ontongsal.testing.common.exception
 
 class InvalidJwtException(
     message: String,

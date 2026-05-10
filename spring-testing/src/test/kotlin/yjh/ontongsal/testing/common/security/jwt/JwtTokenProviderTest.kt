@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
+import yjh.ontongsal.testing.common.exception.InvalidJwtException
 import yjh.ontongsal.testing.common.security.TestingUserDetails
 import yjh.ontongsal.testing.config.IntegrationTest
 import java.time.Duration

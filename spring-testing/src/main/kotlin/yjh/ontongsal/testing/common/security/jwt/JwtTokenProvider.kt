@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
+import yjh.ontongsal.testing.common.exception.InvalidJwtException
 import yjh.ontongsal.testing.common.security.TestingUserDetails
 import java.time.Duration
 import java.util.*

@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.common.security.exception
+package yjh.ontongsal.testing.common.security.advice
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.oshai.kotlinlogging.KotlinLogging

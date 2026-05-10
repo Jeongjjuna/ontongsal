@@ -16,8 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import yjh.ontongsal.testing.common.security.crypto.CryptoProperties
-import yjh.ontongsal.testing.common.security.exception.JwtAccessDeniedHandler
-import yjh.ontongsal.testing.common.security.exception.JwtAuthenticationEntryPoint
+import yjh.ontongsal.testing.common.security.advice.JwtAccessDeniedHandler
+import yjh.ontongsal.testing.common.security.advice.JwtAuthenticationEntryPoint
 import yjh.ontongsal.testing.common.security.filter.JwtSecurityContextFilter
 
 @EnableConfigurationProperties(CryptoProperties::class)
