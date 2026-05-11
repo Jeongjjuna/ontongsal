@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.common.dto
+package yjh.ontongsal.testing.common.response
 
 import java.time.Instant
 

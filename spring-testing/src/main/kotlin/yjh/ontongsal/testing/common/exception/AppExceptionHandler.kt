@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.common.advice
+package yjh.ontongsal.testing.common.exception
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
@@ -13,9 +13,8 @@ import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
-import yjh.ontongsal.testing.common.dto.ErrorDetail
-import yjh.ontongsal.testing.common.dto.ErrorResponse
-import yjh.ontongsal.testing.common.exception.AppException
+import yjh.ontongsal.testing.common.response.ErrorDetail
+import yjh.ontongsal.testing.common.response.ErrorResponse
 
 private val log = KotlinLogging.logger {}
 
