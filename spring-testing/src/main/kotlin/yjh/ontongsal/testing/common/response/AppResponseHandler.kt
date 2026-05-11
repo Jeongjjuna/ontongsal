@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.common.advice
+package yjh.ontongsal.testing.common.response
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.annotation.Resource
@@ -12,15 +12,11 @@ import org.springframework.http.server.ServerHttpResponse
 import org.springframework.http.server.ServletServerHttpResponse
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
-import yjh.ontongsal.testing.common.dto.ErrorResponse
-import yjh.ontongsal.testing.common.dto.SuccessResponse
 import java.io.File
 import java.io.InputStream
 
 @RestControllerAdvice
-class AppResponseHandler(
-    private val objectMapper: ObjectMapper,
-) : ResponseBodyAdvice<Any> {
+class AppResponseHandler : ResponseBodyAdvice<Any> {
 
     override fun supports(
         returnType: MethodParameter,

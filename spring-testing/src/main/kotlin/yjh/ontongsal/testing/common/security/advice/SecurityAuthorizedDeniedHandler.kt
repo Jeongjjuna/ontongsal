@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.stereotype.Component
-import yjh.ontongsal.testing.common.dto.ErrorResponse
+import yjh.ontongsal.testing.common.response.ErrorResponse
 
 private val log = KotlinLogging.logger {}
 
