@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.common.support
+package yjh.ontongsal.testing.common.logging
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper

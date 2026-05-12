@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.common.filter
+package yjh.ontongsal.testing.common.web
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest

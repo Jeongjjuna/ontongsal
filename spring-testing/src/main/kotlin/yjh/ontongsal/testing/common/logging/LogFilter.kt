@@ -1,19 +1,20 @@
-package yjh.ontongsal.testing.common.filter
+package yjh.ontongsal.testing.common.logging
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.util.ContentCachingResponseWrapper
-import yjh.ontongsal.testing.common.support.JsonMasker
+import yjh.ontongsal.testing.common.web.CachedBodyHttpServletRequest
 import java.nio.charset.StandardCharsets
 
 private val log = KotlinLogging.logger {}
 
-@Order(1)
+@Order(Ordered.HIGHEST_PRECEDENCE + 1)
 @Component
 class LogFilter : OncePerRequestFilter() {
 
