@@ -11,6 +11,7 @@ object JsonMasker {
     private const val MASK = "***"
 
     private val SENSITIVE_KEYS = setOf(
+        // body fields
         "password",
         "passwd",
         "pwd",
@@ -19,9 +20,16 @@ object JsonMasker {
         "phone",
         "mobile",
         "ssn",
-        "cardNumber",
-        "accountNumber"
+        "cardnumber",
+        "accountnumber",
+        // HTTP headers
+        "authorization",
+        "cookie",
+        "set-cookie",
+        "proxy-authorization",
     )
+
+    private fun isSensitive(key: String): Boolean = key.lowercase() in SENSITIVE_KEYS
 
     /**
      * json 마스킹 처리
@@ -41,10 +49,7 @@ object JsonMasker {
      */
     fun maskFrom(map: Map<String, Any>): Map<String, Any> {
         return map.mapValues { (key, value) ->
-            when {
-                SENSITIVE_KEYS.any { it.equals(key, ignoreCase = true) } -> MASK
-                else -> value
-            }
+            if (isSensitive(key)) MASK else value
         }
     }
 
@@ -61,7 +66,7 @@ object JsonMasker {
         while (fields.hasNext()) {
             val (key, value) = fields.next()
 
-            if (SENSITIVE_KEYS.any { it.equals(key, ignoreCase = true) }) {
+            if (isSensitive(key)) {
                 obj.put(key, MASK)          // ← 민감키는 value를 ***로 치환
             } else {
                 obj.set<JsonNode>(key, maskNode(value))  // ← 재귀

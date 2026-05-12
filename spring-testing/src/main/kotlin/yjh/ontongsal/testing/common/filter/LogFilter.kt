@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import org.springframework.web.util.ContentCachingRequestWrapper
 import org.springframework.web.util.ContentCachingResponseWrapper
 import yjh.ontongsal.testing.common.support.JsonMasker
 import java.nio.charset.StandardCharsets
@@ -19,7 +18,7 @@ private val log = KotlinLogging.logger {}
 class LogFilter : OncePerRequestFilter() {
 
     companion object {
-        const val UNKNOWN = "UNKNOWN"
+        const val EMPTY = "-"
     }
 
     override fun doFilterInternal(
@@ -27,13 +26,14 @@ class LogFilter : OncePerRequestFilter() {
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        val reqWrapper = ContentCachingRequestWrapper(request)
+        val reqWrapper = CachedBodyHttpServletRequest(request)
         val resWrapper = ContentCachingResponseWrapper(response)
 
-        // ❗wrapper 를 필터 체인에 넘겨야 body 가 caching 됨
+        // chain 진입 전에 request 로깅 (body 는 wrapper 생성 시 이미 캐싱됨)
+        logRequest(reqWrapper)
+
         filterChain.doFilter(reqWrapper, resWrapper)
 
-        logRequest(reqWrapper)
         logResponse(reqWrapper, resWrapper)
 
         // body 복원
@@ -43,23 +43,23 @@ class LogFilter : OncePerRequestFilter() {
     /**
      * TODO : 민감 정보 로깅 제외 예정
      */
-    private fun logRequest(req: ContentCachingRequestWrapper) {
+    private fun logRequest(req: CachedBodyHttpServletRequest) {
         val method = req.method
         val uri = req.requestURI
 
-        val queryParams = req.queryString ?: UNKNOWN
+        val queryParams = req.queryString ?: EMPTY
         val headers = getHeaders(req)
 
-        val requestBody = String(req.contentAsByteArray, StandardCharsets.UTF_8)
-            .ifBlank { UNKNOWN }
+        val requestBody = String(req.getBody(), StandardCharsets.UTF_8)
+            .ifBlank { EMPTY }
 
         val logMap = mapOf(
             "type" to "HTTP Request",
             "method" to method,
             "uri" to uri,
-            "headers" to headers,
             "query" to queryParams,
-            "body" to JsonMasker.maskFrom(requestBody)
+            "body" to JsonMasker.maskFrom(requestBody),
+            "headers" to JsonMasker.maskFrom(headers),
         )
         log.info { logMap }
     }
@@ -67,13 +67,13 @@ class LogFilter : OncePerRequestFilter() {
     /**
      * HTTP 응답정보는 민감정보가 없을것으로 약속하고 전부 로깅한다.
      */
-    private fun logResponse(req: ContentCachingRequestWrapper, res: ContentCachingResponseWrapper) {
+    private fun logResponse(req: CachedBodyHttpServletRequest, res: ContentCachingResponseWrapper) {
         val status = res.status
         val method = req.method
         val uri = req.requestURI
 
         val responseBody = String(res.contentAsByteArray, StandardCharsets.UTF_8)
-            .ifBlank { UNKNOWN }
+            .ifBlank { EMPTY }
 
         val logMap = mapOf(
             "type" to "HTTP Response",
