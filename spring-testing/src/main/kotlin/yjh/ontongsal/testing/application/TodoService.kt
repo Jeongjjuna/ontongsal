@@ -1,7 +1,7 @@
 package yjh.ontongsal.testing.application
 
 import org.springframework.stereotype.Service
-import yjh.ontongsal.testing.common.transaction.TransactionRunner
+import yjh.ontongsal.testing.common.persistence.TransactionRunner
 import yjh.ontongsal.testing.domain.TodoEntity
 import yjh.ontongsal.testing.presentation.controller.dto.CreateTodoRequest
 import yjh.ontongsal.testing.presentation.controller.dto.TodoResponse

@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.common.transaction
+package yjh.ontongsal.testing.common.persistence
 
 interface TransactionRunner {
     fun <T> run(block: () -> T): T

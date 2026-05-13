@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.common.transaction
+package yjh.ontongsal.testing.common.persistence
 
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation

@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.common.converter
+package yjh.ontongsal.testing.common.persistence.converter
 
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter

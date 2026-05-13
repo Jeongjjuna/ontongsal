@@ -1,10 +1,10 @@
 package yjh.ontongsal.testing.common.redis
 
+import com.fasterxml.jackson.core.JsonProcessingException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.assertAll
-import yjh.ontongsal.testing.common.exception.SerializationException
 import java.time.Instant
 import kotlin.test.Test
 
@@ -118,6 +118,6 @@ class DataSerializerTest {
         assertThatThrownBy {
             sut.deserialize(invalidJson, UserDto::class.java)
         }
-            .isInstanceOf(SerializationException::class.java)
+            .isInstanceOf(JsonProcessingException::class.java)
     }
 }
