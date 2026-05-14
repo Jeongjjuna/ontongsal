@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.assertAll
+import yjh.ontongsal.testing.common.dataserializer.DataSerializer
 import java.time.Instant
 import kotlin.test.Test
 
