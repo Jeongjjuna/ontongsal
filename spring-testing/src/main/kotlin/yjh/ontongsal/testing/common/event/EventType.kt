@@ -9,7 +9,7 @@ enum class EventType(
     val payloadClass: Class<out EventPayload>,
     val topic: String,
 ) {
-    TODO_CREATED(TodoCreatedEventPayload::class.java, Topic.TODO);
+    TODO_CREATED(TodoCreatedEventPayload::class.java, Topic.TODO_CREATED);
 
     companion object {
         fun from(type: String): EventType {
@@ -23,6 +23,6 @@ enum class EventType(
     }
 
     object Topic {
-        const val TODO = "todo"
+        const val TODO_CREATED = "todo.created"
     }
 }

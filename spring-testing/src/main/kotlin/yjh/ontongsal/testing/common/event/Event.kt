@@ -3,7 +3,7 @@ package yjh.ontongsal.testing.common.event
 import yjh.ontongsal.testing.common.dataserializer.DataSerializer
 
 class Event<T : EventPayload>(
-    val eventId: Long,
+    val eventId: Long, // 고유한 이벤트 발행을 나타내는 식별값(컨슈머는 이값을 기반으로 멱등성 처리를 할 수 있다)
     val type: EventType,
     val payload: T,
 ) {

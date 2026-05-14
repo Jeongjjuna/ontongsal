@@ -12,15 +12,21 @@ private val log = KotlinLogging.logger {}
 class KafkaEventPublisher(
     private val kafkaTemplate: KafkaTemplate<String, String>,
 ) {
+    /**
+     * 특정 토픽에 메세지 발행
+     */
     fun publish(event: Event<*>) {
         log.info { "Sending member message: $event" }
         val data: String = DataSerializer.serialize(event)
-        kafkaTemplate.send(event.type.topic, event.eventId.toString(), data)
+        kafkaTemplate.send(event.type.topic, data)
     }
 
-    fun publishWithKey(event: Event<*>, id: Long) {
-        log.info { "Sending member message with key=$id: $event" }
+    /**
+     * key 해시값을 기반으로 특정 파티션에 라우팅
+     */
+    fun publishWithKey(event: Event<*>, key: String) {
+        log.info { "Sending member message with key=$key: $event" }
         val data: String = DataSerializer.serialize(event)
-        kafkaTemplate.send(event.type.topic, id.toString(), data)
+        kafkaTemplate.send(event.type.topic, key, data)
     }
 }
