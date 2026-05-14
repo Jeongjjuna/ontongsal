@@ -12,8 +12,6 @@ import kotlin.test.Test
 @DisplayName("[단위테스트] DataSerializer")
 class DataSerializerTest {
 
-    private var sut = DataSerializer()
-
     data class UserDto(
         val id: Long,
         val name: String,
@@ -27,7 +25,7 @@ class DataSerializerTest {
         val user = UserDto(id = 1L, name = "홍길동", email = "hong@example.com")
 
         //when
-        val result = sut.serialize(user)
+        val result = DataSerializer.serialize(user)
 
         // then
         val expected = """{"id":1,"name":"홍길동","email":"hong@example.com","createdAt":null}"""
@@ -40,7 +38,7 @@ class DataSerializerTest {
         val json = """{"id":1,"name":"홍길동","email":"hong@example.com","createdAt":null}"""
 
         // when
-        val result = sut.deserialize(json, UserDto::class.java)
+        val result = DataSerializer.deserialize(json, UserDto::class.java)
 
         // then
         assertAll(
@@ -66,7 +64,7 @@ class DataSerializerTest {
         )
 
         // when
-        val result = sut.serialize(dto)
+        val result = DataSerializer.serialize(dto)
 
         // then
         val expected =
@@ -82,7 +80,7 @@ class DataSerializerTest {
             """{"id":1,"occurredAt":"2024-06-01T12:00:00Z"}"""
 
         // when
-        val result = sut.deserialize(json, TimeDto::class.java)
+        val result = DataSerializer.deserialize(json, TimeDto::class.java)
 
         // then
         assertAll(
@@ -101,10 +99,10 @@ class DataSerializerTest {
             id = 1L,
             occurredAt = Instant.now()
         )
-        val json = sut.serialize(original)
+        val json = DataSerializer.serialize(original)
 
         // when
-        val restored = sut.deserialize(json, TimeDto::class.java)
+        val restored = DataSerializer.deserialize(json, TimeDto::class.java)
 
         // then
         assertThat(restored).isEqualTo(original)
@@ -117,7 +115,7 @@ class DataSerializerTest {
 
         // when & then
         assertThatThrownBy {
-            sut.deserialize(invalidJson, UserDto::class.java)
+            DataSerializer.deserialize(invalidJson, UserDto::class.java)
         }
             .isInstanceOf(JsonProcessingException::class.java)
     }

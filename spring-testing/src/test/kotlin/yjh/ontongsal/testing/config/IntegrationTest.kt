@@ -4,6 +4,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
+import yjh.ontongsal.testing.config.KafkaTestContainer.KAFKA_CONTAINER
 import yjh.ontongsal.testing.config.MySQLTestContainer.MYSQL_CONTAINER
 import yjh.ontongsal.testing.config.RedisTestContainer.REDIS_CONTAINER
 
@@ -25,6 +26,12 @@ abstract class IntegrationTest {
         fun setRedisProperties(registry: DynamicPropertyRegistry) {
             registry.add("spring.data.redis.host", REDIS_CONTAINER::getHost)
             registry.add("spring.data.redis.port", REDIS_CONTAINER::getFirstMappedPort)
+        }
+
+        @JvmStatic
+        @DynamicPropertySource
+        fun setKafkaProperties(registry: DynamicPropertyRegistry) {
+            registry.add("spring.kafka.bootstrap-servers", KAFKA_CONTAINER::getBootstrapServers);
         }
     }
 }

@@ -28,6 +28,10 @@ spring:
             hibernate:
                 format_sql: true
 
+    kafka:
+        bootstrap-servers:
+        # kafka 정보는 ApplicationContext 로드시 동적으로 주입
+
 logging:
     level:
         yjh.ontongsal.testing: DEBUG
