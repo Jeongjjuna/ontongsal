@@ -34,7 +34,7 @@ class KafkaConsumerConfig(
         listener.consumerFactory = consumerFactory
 
         // 수동 커밋을 위한 설정
-        listener.containerProperties.setAckMode(ContainerProperties.AckMode.MANUAL);
+        listener.containerProperties.setAckMode(ContainerProperties.AckMode.RECORD); // or BATCH : 멱등성 보장하도록 구현해야함.
         return listener
     }
 }
