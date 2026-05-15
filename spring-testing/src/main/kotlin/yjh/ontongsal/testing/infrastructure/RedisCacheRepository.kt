@@ -4,7 +4,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import yjh.ontongsal.testing.common.circuitbreaker.CircuitBreakerAdapter
-import yjh.ontongsal.testing.common.redis.DataSerializer
+import yjh.ontongsal.testing.common.dataserializer.DataSerializer
 import java.time.Duration
 
 private val log = KotlinLogging.logger {}
@@ -16,7 +16,6 @@ private val log = KotlinLogging.logger {}
 @Component
 class RedisCacheRepository(
     private val redisTemplate: RedisTemplate<String, String>,
-    private val serializer: DataSerializer,
     private val circuitBreaker: CircuitBreakerAdapter,
 ) {
 
@@ -35,7 +34,7 @@ class RedisCacheRepository(
         }
 
         return try {
-            serializer.deserialize(json, clazz)
+            DataSerializer.deserialize(json, clazz)
         } catch (e: Exception) {
             log.warn(e) { "Cache deserialize failed key=$key" }
             delete(key)
@@ -45,7 +44,7 @@ class RedisCacheRepository(
 
     fun set(key: String, value: Any, ttl: Duration) {
         val json = try {
-            serializer.serialize(value)
+            DataSerializer.serialize(value)
         } catch (e: Exception) {
             log.warn(e) { "Cache serialize failed key=$key" }
             return
