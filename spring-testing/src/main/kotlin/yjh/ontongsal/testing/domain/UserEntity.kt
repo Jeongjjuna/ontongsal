@@ -1,7 +1,7 @@
 package yjh.ontongsal.testing.domain
 
 import jakarta.persistence.*
-import yjh.ontongsal.testing.common.persistence.converter.EncryptConverter
+import yjh.ontongsal.testing.common.web.security.crypto.converter.EncryptConverter
 
 @Entity
 @Table(name = "users")

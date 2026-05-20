@@ -2,8 +2,8 @@ package yjh.ontongsal.testing.application
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
-import yjh.ontongsal.testing.common.exception.AppException
-import yjh.ontongsal.testing.common.exception.ErrorCode
+import yjh.ontongsal.testing.common.web.exception.AppException
+import yjh.ontongsal.testing.common.web.exception.ErrorCode
 import yjh.ontongsal.testing.domain.TodoEntity
 import yjh.ontongsal.testing.infrastructure.RedisCacheRepository
 import yjh.ontongsal.testing.infrastructure.TodoRepository

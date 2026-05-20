@@ -1,9 +1,9 @@
 package yjh.ontongsal.testing.application
 
 import org.springframework.stereotype.Component
-import yjh.ontongsal.testing.common.exception.AppException
-import yjh.ontongsal.testing.common.exception.ErrorCode
-import yjh.ontongsal.testing.common.security.crypto.CredentialEncoder
+import yjh.ontongsal.testing.common.web.exception.AppException
+import yjh.ontongsal.testing.common.web.exception.ErrorCode
+import yjh.ontongsal.testing.common.web.security.crypto.CredentialEncoder
 import yjh.ontongsal.testing.infrastructure.UserRepository
 
 @Component

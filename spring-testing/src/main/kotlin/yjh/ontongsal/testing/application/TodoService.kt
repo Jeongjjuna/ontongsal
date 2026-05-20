@@ -1,12 +1,12 @@
 package yjh.ontongsal.testing.application
 
 import org.springframework.stereotype.Service
-import yjh.ontongsal.testing.common.event.Event
-import yjh.ontongsal.testing.common.event.EventType
-import yjh.ontongsal.testing.common.event.payload.TodoCreatedEventPayload
-import yjh.ontongsal.testing.common.persistence.TransactionRunner
+import yjh.ontongsal.testing.common.messaging.Event
+import yjh.ontongsal.testing.common.messaging.EventType
+import yjh.ontongsal.testing.common.messaging.kafka.KafkaEventPublisher
+import yjh.ontongsal.testing.common.messaging.payload.TodoCreatedEventPayload
+import yjh.ontongsal.testing.common.persistence.transation.TransactionRunner
 import yjh.ontongsal.testing.domain.TodoEntity
-import yjh.ontongsal.testing.infrastructure.KafkaEventPublisher
 import yjh.ontongsal.testing.presentation.controller.dto.CreateTodoRequest
 import yjh.ontongsal.testing.presentation.controller.dto.TodoResponse
 import yjh.ontongsal.testing.presentation.controller.dto.UpdateTodoRequest

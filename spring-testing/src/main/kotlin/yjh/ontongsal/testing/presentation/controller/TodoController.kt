@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import yjh.ontongsal.testing.application.TodoService
-import yjh.ontongsal.testing.common.security.TestingUserDetails
+import yjh.ontongsal.testing.common.web.security.TestingUserDetails
 import yjh.ontongsal.testing.presentation.controller.dto.CreateTodoRequest
 import yjh.ontongsal.testing.presentation.controller.dto.TodoResponse
 import yjh.ontongsal.testing.presentation.controller.dto.UpdateTodoRequest
