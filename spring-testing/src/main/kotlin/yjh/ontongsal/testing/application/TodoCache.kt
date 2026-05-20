@@ -4,9 +4,9 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 import yjh.ontongsal.testing.common.web.exception.AppException
 import yjh.ontongsal.testing.common.web.exception.ErrorCode
-import yjh.ontongsal.testing.domain.TodoEntity
-import yjh.ontongsal.testing.infrastructure.RedisCacheRepository
-import yjh.ontongsal.testing.infrastructure.TodoRepository
+import yjh.ontongsal.testing.domain.Todo
+import yjh.ontongsal.testing.infrastructure.jpa.TodoJpaRepository
+import yjh.ontongsal.testing.infrastructure.redis.RedisCacheRepository
 import java.time.Duration
 
 /**
@@ -18,24 +18,25 @@ private val log = KotlinLogging.logger {}
 
 @Component
 class TodoCache(
-    private val todoRepository: TodoRepository,
+    private val todoJpaRepository: TodoJpaRepository,
     private val cacheRepository: RedisCacheRepository,
 ) {
 
     private val ttl = Duration.ofSeconds(10)
 
-    fun get(id: Long): TodoEntity {
+    fun get(id: Long): Todo {
         val key = cacheKey(id)
 
         // 1. Cache Hit
-        cacheRepository.get(key, TodoEntity::class.java)
+        cacheRepository.get(key, Todo::class.java)
             ?.let { return it }
 
         log.debug { "Cache Miss key=$key" }
 
         // 2. Cache Miss (or Redis 장애)
-        val todo = todoRepository.findById(id)
+        val todo = todoJpaRepository.findById(id)
             .orElseThrow { AppException.NotFound(ErrorCode.TODO_NOT_FOUND) }
+            .toDomain()
 
         // 3. Cache Write (Best Effort)
         cacheRepository.set(key, todo, ttl)

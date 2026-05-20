@@ -1,17 +1,16 @@
-package yjh.ontongsal.testing.domain
+package yjh.ontongsal.testing.infrastructure.jpa.entity
 
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
-import yjh.ontongsal.testing.common.web.exception.AppException
-import yjh.ontongsal.testing.common.web.exception.ErrorCode
+import yjh.ontongsal.testing.domain.Todo
 import java.time.Instant
 
 @Entity
 @Table(name = "todos")
 @EntityListeners(AuditingEntityListener::class)
-class TodoEntity(
+class TodoJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
@@ -36,26 +35,25 @@ class TodoEntity(
     @Column(nullable = false)
     var updatedAt: Instant? = null,
 ) {
-    fun update(title: String, content: String?, completed: Boolean) {
-        this.title = title
-        this.content = content
-        this.completed = completed
-    }
-
-    fun validateOwner(userId: Long) {
-        if (this.userId != userId) {
-            throw AppException.Forbidden(ErrorCode.TODO_FORBIDDEN)
-        }
-    }
+    fun toDomain(): Todo = Todo(
+        id = id,
+        userId = userId,
+        title = title,
+        content = content,
+        completed = completed,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+    )
 
     companion object {
-        fun create(userId: Long, title: String, content: String): TodoEntity {
-            return TodoEntity(
-                userId = userId,
-                title = title,
-                content = content,
-                completed = false
-            )
-        }
+        fun fromDomain(domain: Todo): TodoJpaEntity = TodoJpaEntity(
+            id = domain.id,
+            userId = domain.userId,
+            title = domain.title,
+            content = domain.content,
+            completed = domain.completed,
+            createdAt = domain.createdAt,
+            updatedAt = domain.updatedAt,
+        )
     }
 }

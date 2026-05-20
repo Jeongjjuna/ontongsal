@@ -1,4 +1,4 @@
-package yjh.ontongsal.testing.infrastructure
+package yjh.ontongsal.testing.infrastructure.redis
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.redis.core.RedisTemplate
