@@ -1,15 +1,15 @@
 package yjh.ontongsal.testing.application
 
 import org.springframework.stereotype.Component
+import yjh.ontongsal.testing.application.port.TodoRepository
 import yjh.ontongsal.testing.domain.Todo
-import yjh.ontongsal.testing.infrastructure.jpa.TodoJpaRepository
 
 @Component
 class TodoRemover(
-    private val todoJpaRepository: TodoJpaRepository,
+    private val todoRepository: TodoRepository,
 ) {
 
     fun delete(todo: Todo) {
-        todoJpaRepository.deleteById(todo.id)
+        todoRepository.deleteById(todo.id)
     }
 }

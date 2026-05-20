@@ -1,9 +1,9 @@
 package yjh.ontongsal.testing.application
 
 import org.springframework.stereotype.Service
+import yjh.ontongsal.testing.application.port.EventPublisher
 import yjh.ontongsal.testing.common.messaging.Event
 import yjh.ontongsal.testing.common.messaging.EventType
-import yjh.ontongsal.testing.common.messaging.kafka.KafkaEventPublisher
 import yjh.ontongsal.testing.common.messaging.payload.TodoCreatedEventPayload
 import yjh.ontongsal.testing.common.persistence.transation.TransactionRunner
 import yjh.ontongsal.testing.domain.Todo
@@ -14,7 +14,7 @@ import yjh.ontongsal.testing.presentation.controller.dto.UpdateTodoRequest
 @Service
 class TodoService(
     private val transaction: TransactionRunner,
-    private val kafkaEventPublisher: KafkaEventPublisher,
+    private val eventPublisher: EventPublisher,
     private val todoCache: TodoCache,
     private val todoFinder: TodoFinder,
     private val todoCreator: TodoCreator,
@@ -38,7 +38,7 @@ class TodoService(
             )
         )
 
-        kafkaEventPublisher.publish(event)
+        eventPublisher.publish(event)
 
         return todoId
     }

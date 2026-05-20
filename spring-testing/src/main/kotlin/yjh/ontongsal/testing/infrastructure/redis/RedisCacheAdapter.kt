@@ -3,6 +3,7 @@ package yjh.ontongsal.testing.infrastructure.redis
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
+import yjh.ontongsal.testing.application.port.CacheRepository
 import yjh.ontongsal.testing.common.circuitbreaker.CircuitBreakerAdapter
 import yjh.ontongsal.testing.common.redis.serializer.RedisValueSerializer
 import java.time.Duration
@@ -14,12 +15,12 @@ private val log = KotlinLogging.logger {}
  * 단, warn 로그 확인을 통해 개발자가 인지할 수 있도록 해야 한다.
  */
 @Component
-class RedisCacheRepository(
+class RedisCacheAdapter(
     private val redisTemplate: RedisTemplate<String, String>,
     private val circuitBreaker: CircuitBreakerAdapter,
-) {
+) : CacheRepository {
 
-    fun <T> get(key: String, clazz: Class<T>): T? {
+    override fun <T> get(key: String, clazz: Class<T>): T? {
         val json: String? = try {
             circuitBreaker.run("redis") {
                 redisTemplate.opsForValue().get(key)
@@ -42,7 +43,7 @@ class RedisCacheRepository(
         }
     }
 
-    fun set(key: String, value: Any, ttl: Duration) {
+    override fun set(key: String, value: Any, ttl: Duration) {
         val json = try {
             RedisValueSerializer.serialize(value)
         } catch (e: Exception) {
@@ -60,7 +61,7 @@ class RedisCacheRepository(
         }
     }
 
-    fun delete(key: String) {
+    override fun delete(key: String) {
         try {
             circuitBreaker.run("redis") {
                 redisTemplate.delete(key)
