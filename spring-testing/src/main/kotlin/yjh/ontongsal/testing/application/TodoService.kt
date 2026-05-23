@@ -1,12 +1,12 @@
 package yjh.ontongsal.testing.application
 
 import org.springframework.stereotype.Service
-import yjh.ontongsal.testing.common.event.Event
-import yjh.ontongsal.testing.common.event.EventType
-import yjh.ontongsal.testing.common.event.payload.TodoCreatedEventPayload
-import yjh.ontongsal.testing.common.persistence.TransactionRunner
-import yjh.ontongsal.testing.domain.TodoEntity
-import yjh.ontongsal.testing.infrastructure.KafkaEventPublisher
+import yjh.ontongsal.testing.application.port.EventPublisher
+import yjh.ontongsal.testing.common.messaging.Event
+import yjh.ontongsal.testing.common.messaging.EventType
+import yjh.ontongsal.testing.common.messaging.payload.TodoCreatedEventPayload
+import yjh.ontongsal.testing.common.persistence.transation.TransactionRunner
+import yjh.ontongsal.testing.domain.Todo
 import yjh.ontongsal.testing.presentation.controller.dto.CreateTodoRequest
 import yjh.ontongsal.testing.presentation.controller.dto.TodoResponse
 import yjh.ontongsal.testing.presentation.controller.dto.UpdateTodoRequest
@@ -14,10 +14,11 @@ import yjh.ontongsal.testing.presentation.controller.dto.UpdateTodoRequest
 @Service
 class TodoService(
     private val transaction: TransactionRunner,
-    private val kafkaEventPublisher: KafkaEventPublisher,
+    private val eventPublisher: EventPublisher,
     private val todoCache: TodoCache,
     private val todoFinder: TodoFinder,
     private val todoCreator: TodoCreator,
+    private val todoUpdater: TodoUpdater,
     private val todoRemover: TodoRemover,
 ) {
 
@@ -37,27 +38,26 @@ class TodoService(
             )
         )
 
-        kafkaEventPublisher.publish(event)
+        eventPublisher.publish(event)
 
         return todoId
     }
 
-    fun findById(userId: Long, todoId: Long): TodoEntity {
+    fun findById(userId: Long, todoId: Long): Todo {
         return todoCache.get(todoId)
             .also { it.validateOwner(userId) }
     }
 
-    fun findAll(userId: Long): List<TodoEntity> {
+    fun findAll(userId: Long): List<Todo> {
         return todoFinder.getTodos(userId)
     }
 
     fun update(userId: Long, todoId: Long, request: UpdateTodoRequest): TodoResponse {
         val updatedTodo = transaction.run {
-            todoFinder.getTodo(todoId)
-                .also {
-                    it.validateOwner(userId)
-                    it.update(request.title, request.content, request.completed)
-                }
+            val todo = todoFinder.getTodo(todoId)
+            todo.validateOwner(userId)
+            todo.update(request.title, request.content, request.completed)
+            todoUpdater.update(todo)
         }
         return TodoResponse.from(updatedTodo)
     }

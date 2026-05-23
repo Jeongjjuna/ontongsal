@@ -1,6 +1,6 @@
 package yjh.ontongsal.testing.presentation.controller.dto
 
-import yjh.ontongsal.testing.domain.TodoEntity
+import yjh.ontongsal.testing.domain.Todo
 import java.time.Instant
 
 data class TodoResponse(
@@ -13,14 +13,14 @@ data class TodoResponse(
     val updatedAt: Instant?,
 ) {
     companion object {
-        fun from(entity: TodoEntity): TodoResponse = TodoResponse(
-            id = entity.id,
-            userId = entity.userId,
-            title = entity.title,
-            content = entity.content,
-            completed = entity.completed,
-            createdAt = entity.createdAt,
-            updatedAt = entity.updatedAt,
+        fun from(todo: Todo): TodoResponse = TodoResponse(
+            id = todo.id,
+            userId = todo.userId,
+            title = todo.title,
+            content = todo.content,
+            completed = todo.completed,
+            createdAt = todo.createdAt,
+            updatedAt = todo.updatedAt,
         )
     }
 }

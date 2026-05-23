@@ -5,11 +5,11 @@ import yjh.ontongsal.testing.application.port.TodoRepository
 import yjh.ontongsal.testing.domain.Todo
 
 @Component
-class TodoRemover(
+class TodoUpdater(
     private val todoRepository: TodoRepository,
 ) {
 
-    fun delete(todo: Todo) {
-        todoRepository.deleteById(todo.id)
+    fun update(todo: Todo): Todo {
+        return todoRepository.save(todo)
     }
 }

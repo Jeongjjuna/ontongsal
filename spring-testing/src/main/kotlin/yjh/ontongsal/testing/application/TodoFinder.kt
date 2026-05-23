@@ -1,22 +1,22 @@
 package yjh.ontongsal.testing.application
 
 import org.springframework.stereotype.Component
-import yjh.ontongsal.testing.common.exception.AppException
-import yjh.ontongsal.testing.common.exception.ErrorCode
-import yjh.ontongsal.testing.domain.TodoEntity
-import yjh.ontongsal.testing.infrastructure.TodoRepository
+import yjh.ontongsal.testing.application.port.TodoRepository
+import yjh.ontongsal.testing.common.web.exception.AppException
+import yjh.ontongsal.testing.common.web.exception.ErrorCode
+import yjh.ontongsal.testing.domain.Todo
 
 @Component
 class TodoFinder(
     private val todoRepository: TodoRepository,
 ) {
 
-    fun getTodo(todoId: Long): TodoEntity {
+    fun getTodo(todoId: Long): Todo {
         return todoRepository.findById(todoId)
-            .orElseThrow { AppException.NotFound(ErrorCode.TODO_NOT_FOUND) }
+            ?: throw AppException.NotFound(ErrorCode.TODO_NOT_FOUND)
     }
 
-    fun getTodos(userId: Long): List<TodoEntity> {
+    fun getTodos(userId: Long): List<Todo> {
         return todoRepository.findAllByUserId(userId)
     }
 }

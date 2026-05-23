@@ -1,8 +1,8 @@
 package yjh.ontongsal.testing.application
 
 import org.springframework.stereotype.Service
-import yjh.ontongsal.testing.common.persistence.TransactionRunner
-import yjh.ontongsal.testing.common.security.jwt.JwtTokenProvider
+import yjh.ontongsal.testing.common.persistence.transation.TransactionRunner
+import yjh.ontongsal.testing.common.web.security.jwt.JwtTokenProvider
 import yjh.ontongsal.testing.presentation.controller.dto.LoginRequest
 import yjh.ontongsal.testing.presentation.controller.dto.SignupRequest
 import java.time.Duration
