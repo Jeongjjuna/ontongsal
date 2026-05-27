@@ -27,8 +27,17 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("tools.jackson.module:jackson-module-kotlin")
 
+    // spring-validation
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
     // spring-modulith
 	implementation("org.springframework.modulith:spring-modulith-starter-core")
+
+    // spring-transaction
+    implementation("org.springframework:spring-tx")
+
+    // kotlin logging
+    implementation("io.github.oshai:kotlin-logging-jvm:8.0.01")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
