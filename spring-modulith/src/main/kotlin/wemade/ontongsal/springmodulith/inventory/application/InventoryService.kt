@@ -19,22 +19,15 @@ class InventoryService(
             ?: throw AppException.NotFound(InventoryErrorCode.INVENTORY_NOT_FOUND)
     }
 
-    override fun decreaseByItemId(itemId: String, quantity: Long): Inventory {
-        if (quantity < 0) {
+    override fun decreaseByItemId(itemId: String, quantity: Long) {
+        if (quantity <= 0) {
             throw AppException.BadRequest(InventoryErrorCode.INVALID_QUANTITY)
         }
 
-        return transaction.run {
-            val inventory = inventoryQueryPort.findByItemId(itemId)
-                ?: throw AppException.NotFound(InventoryErrorCode.INVENTORY_NOT_FOUND)
+        val updated = inventoryCommandPort.decreaseStock(itemId, quantity)
 
-            if (inventory.stock < quantity) {
-                throw AppException.BadRequest(InventoryErrorCode.INSUFFICIENT_STOCK)
-            }
-
-            val updatedInventory = inventoryCommandPort.decreaseStock(itemId, quantity)
-
-            return@run updatedInventory
+        if (!updated) {
+            throw AppException.Conflict(InventoryErrorCode.INSUFFICIENT_STOCK)
         }
     }
 

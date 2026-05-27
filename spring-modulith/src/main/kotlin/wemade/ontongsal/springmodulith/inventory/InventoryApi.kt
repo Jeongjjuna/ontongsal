@@ -7,7 +7,7 @@ import wemade.ontongsal.springmodulith.inventory.domain.Inventory
  */
 interface InventoryApi {
 
-    fun decreaseByItemId(itemId: String, quantity: Long): Inventory
+    fun decreaseByItemId(itemId: String, quantity: Long)
 
     fun updateStock(itemId: String, stock: Long): Inventory
 }

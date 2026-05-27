@@ -37,7 +37,7 @@ class InMemoryInventoryAdapter : InventoryCommandPort, InventoryQueryPort {
         return store[itemId]
     }
 
-    override fun decreaseStock(itemId: String, quantity: Long): Inventory {
+    override fun decreaseStock(itemId: String, quantity: Long): Boolean {
         val inventory = store[itemId]
             ?: throw IllegalStateException("Inventory not found: $itemId")
 
@@ -52,6 +52,6 @@ class InMemoryInventoryAdapter : InventoryCommandPort, InventoryQueryPort {
         inventory.stock -= quantity
 
         store[itemId] = inventory
-        return inventory
+        return true
     }
 }

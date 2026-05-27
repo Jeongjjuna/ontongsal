@@ -6,7 +6,7 @@ class Item(
     val id: String,
     val name: String,
     val price: BigDecimal,
-    private val status: ItemStatus
+    val status: ItemStatus
 ) {
 
     fun isOrderable(): Boolean {
