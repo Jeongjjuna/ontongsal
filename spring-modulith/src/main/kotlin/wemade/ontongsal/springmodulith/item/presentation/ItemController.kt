@@ -15,10 +15,10 @@ class ItemController(
     @GetMapping("/{itemId}/snapshot")
     fun getItemSnapshot(
         @PathVariable itemId: String,
-    ): ItemSnapshotResponse {
+    ): ItemResponse {
 
         val snapshot = itemService.getItemSnapshot(itemId)
 
-        return ItemSnapshotResponse.from(snapshot)
+        return ItemResponse.from(snapshot)
     }
 }
