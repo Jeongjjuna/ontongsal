@@ -1,6 +1,6 @@
 package wemade.ontongsal.springmodulith.inventory.domain
 
-import wemade.ontongsal.springmodulith.shared.exception.ErrorCode
+import wemade.ontongsal.springmodulith.shared.ErrorCode
 
 enum class InventoryErrorCode(
     override val code: Int,

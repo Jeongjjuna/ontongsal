@@ -4,9 +4,11 @@ import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.modulith.core.ApplicationModules
 import org.springframework.modulith.docs.Documenter
+import org.springframework.test.context.ActiveProfiles
 
 
-@SpringBootTest
+@ActiveProfiles("test")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SpringModulithApplicationTests {
 
 	@Test
@@ -15,7 +17,7 @@ class SpringModulithApplicationTests {
 
     @Test
     fun writeDocumentationSnippets() {
-        var modules: ApplicationModules = ApplicationModules.of(SpringModulithApplication::class.java).verify()
+        val modules: ApplicationModules = ApplicationModules.of(SpringModulithApplication::class.java).verify()
 
         Documenter(modules)
             .writeModulesAsPlantUml()
