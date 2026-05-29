@@ -1,4 +1,4 @@
-package wemade.ontongsal.springmodulith.common.response
+package wemade.ontongsal.springmodulith.shared.response
 
 import java.time.Instant
 

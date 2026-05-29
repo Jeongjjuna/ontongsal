@@ -1,6 +1,6 @@
-package wemade.ontongsal.springmodulith.common
+package wemade.ontongsal.springmodulith.shared
 
-import wemade.ontongsal.springmodulith.common.exception.ErrorCode
+import wemade.ontongsal.springmodulith.shared.exception.ErrorCode
 
 sealed class AppException(
     open val code: Int,

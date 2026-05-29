@@ -1,9 +1,9 @@
-package wemade.ontongsal.springmodulith.common.transation
+package wemade.ontongsal.springmodulith.shared.transation
 
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-import wemade.ontongsal.springmodulith.common.TransactionRunner
+import wemade.ontongsal.springmodulith.shared.TransactionRunner
 
 @Component
 class SpringTransactionRunner : TransactionRunner {

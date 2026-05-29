@@ -1,4 +1,4 @@
-package wemade.ontongsal.springmodulith.common.logging
+package wemade.ontongsal.springmodulith.shared.logging
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.FilterChain

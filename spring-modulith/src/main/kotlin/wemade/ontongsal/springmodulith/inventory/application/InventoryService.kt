@@ -1,11 +1,11 @@
 package wemade.ontongsal.springmodulith.inventory.application
 
 import org.springframework.stereotype.Service
-import wemade.ontongsal.springmodulith.common.AppException
-import wemade.ontongsal.springmodulith.common.TransactionRunner
 import wemade.ontongsal.springmodulith.inventory.InventoryApi
 import wemade.ontongsal.springmodulith.inventory.domain.Inventory
 import wemade.ontongsal.springmodulith.inventory.domain.InventoryErrorCode
+import wemade.ontongsal.springmodulith.shared.AppException
+import wemade.ontongsal.springmodulith.shared.TransactionRunner
 
 @Service
 class InventoryService(

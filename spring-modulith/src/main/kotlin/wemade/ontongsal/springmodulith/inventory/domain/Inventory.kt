@@ -1,6 +1,6 @@
 package wemade.ontongsal.springmodulith.inventory.domain
 
-import wemade.ontongsal.springmodulith.common.AppException
+import wemade.ontongsal.springmodulith.shared.AppException
 
 class Inventory(
     val itemId: String,

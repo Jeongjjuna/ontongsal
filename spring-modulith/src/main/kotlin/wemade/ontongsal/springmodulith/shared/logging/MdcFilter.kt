@@ -1,4 +1,4 @@
-package wemade.ontongsal.springmodulith.common.logging
+package wemade.ontongsal.springmodulith.shared.logging
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest

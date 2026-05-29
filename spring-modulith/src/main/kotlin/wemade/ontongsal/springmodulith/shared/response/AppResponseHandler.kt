@@ -1,4 +1,4 @@
-package wemade.ontongsal.springmodulith.common.response
+package wemade.ontongsal.springmodulith.shared.response
 
 import jakarta.annotation.Resource
 import org.springframework.core.MethodParameter

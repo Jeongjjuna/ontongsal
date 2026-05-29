@@ -1,4 +1,4 @@
-package wemade.ontongsal.springmodulith.common.exception
+package wemade.ontongsal.springmodulith.shared.exception
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.ConstraintViolationException
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import tools.jackson.databind.exc.InvalidFormatException
 import tools.jackson.databind.exc.MismatchedInputException
-import wemade.ontongsal.springmodulith.common.AppException
-import wemade.ontongsal.springmodulith.common.response.ErrorDetail
-import wemade.ontongsal.springmodulith.common.response.ErrorResponse
+import wemade.ontongsal.springmodulith.shared.AppException
+import wemade.ontongsal.springmodulith.shared.response.ErrorDetail
+import wemade.ontongsal.springmodulith.shared.response.ErrorResponse
 
 private val log = KotlinLogging.logger {}
 

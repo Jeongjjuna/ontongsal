@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Primary
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
-import wemade.ontongsal.springmodulith.common.TransactionRunner
 import wemade.ontongsal.springmodulith.item.application.ItemQueryPort
 import wemade.ontongsal.springmodulith.item.domain.ItemStatus
+import wemade.ontongsal.springmodulith.shared.TransactionRunner
 import java.math.BigDecimal
 
 @Primary

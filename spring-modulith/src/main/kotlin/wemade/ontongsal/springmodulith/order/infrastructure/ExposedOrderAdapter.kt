@@ -3,9 +3,9 @@ package wemade.ontongsal.springmodulith.order.infrastructure
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Repository
-import wemade.ontongsal.springmodulith.common.TransactionRunner
 import wemade.ontongsal.springmodulith.order.application.OrderCommandPort
 import wemade.ontongsal.springmodulith.order.domain.Order
+import wemade.ontongsal.springmodulith.shared.TransactionRunner
 
 @Primary
 @Repository

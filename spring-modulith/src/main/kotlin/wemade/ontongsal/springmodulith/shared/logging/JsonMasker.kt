@@ -1,4 +1,4 @@
-package wemade.ontongsal.springmodulith.common.logging
+package wemade.ontongsal.springmodulith.shared.logging
 
 import tools.jackson.databind.JsonNode
 import tools.jackson.databind.json.JsonMapper

@@ -2,12 +2,12 @@ package wemade.ontongsal.springmodulith.order.application
 
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
-import wemade.ontongsal.springmodulith.common.TransactionRunner
 import wemade.ontongsal.springmodulith.inventory.InventoryApi
 import wemade.ontongsal.springmodulith.item.ItemApi
 import wemade.ontongsal.springmodulith.order.OrderCreatedEvent
 import wemade.ontongsal.springmodulith.order.domain.Order
 import wemade.ontongsal.springmodulith.order.presentation.CreateOrderCommand
+import wemade.ontongsal.springmodulith.shared.TransactionRunner
 
 @Service
 class OrderService(

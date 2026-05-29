@@ -1,4 +1,4 @@
-package wemade.ontongsal.springmodulith.common.exposed
+package wemade.ontongsal.springmodulith.shared.exposed
 
 import org.jetbrains.exposed.v1.core.DatabaseConfig
 import org.jetbrains.exposed.v1.spring.boot.autoconfigure.ExposedAutoConfiguration
