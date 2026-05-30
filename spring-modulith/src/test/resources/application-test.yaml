@@ -1,0 +1,21 @@
+spring:
+    application:
+        name: spring-modulith
+
+    config:
+        activate:
+            # 프로필 이름을 test로 변경합니다.
+            on-profile: test
+
+    datasource:
+        driver-class-name: org.h2.Driver
+        # 로컬 DB와 완전히 분리하기 위해 DB 이름을 조금 변경했습니다 (TESTING_DB -> TEST_DB)
+        url: jdbc:h2:mem:TEST_DB;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        username: sa
+        password:
+
+    exposed:
+        # 테스트 실행 시마다 스키마를 새로 생성해야 하므로 true 유지
+        generate-ddl: true
+        # 쿼리 확인이 필요 없다면 테스트 속도 향상과 로그 정리를 위해 false로 끄셔도 됩니다.
+        show-sql: true
