@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Apple SD Gothic Neo",
+    "Noto Sans KR", sans-serif;
+
+  --color-brand-50: oklch(0.97 0.02 250);
+  --color-brand-500: oklch(0.62 0.18 255);
+  --color-brand-600: oklch(0.55 0.19 255);
+  --color-brand-700: oklch(0.48 0.18 255);
+}
+
+html,
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
