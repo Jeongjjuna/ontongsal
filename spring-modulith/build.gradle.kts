@@ -30,6 +30,9 @@ dependencies {
     // spring-validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
+    // spring-kafka
+    implementation("org.springframework.kafka:spring-kafka")
+
     // spring-modulith
 	implementation("org.springframework.modulith:spring-modulith-starter-core")
 
@@ -37,7 +40,8 @@ dependencies {
     implementation("org.springframework:spring-tx")
 
     // spring-exposed
-    implementation("org.jetbrains.exposed:exposed-spring-boot-starter:1.3.0")
+    implementation("org.jetbrains.exposed:exposed-spring-boot4-starter:1.3.0")
+    implementation("org.jetbrains.exposed:exposed-java-time:1.3.0")
     implementation("com.h2database:h2")
 
     // kotlin logging

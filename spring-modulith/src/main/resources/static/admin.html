@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>Event Admin</title>
+  <style>
+    :root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #222; }
+    body { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+    h1 { margin-bottom: 4px; }
+    p.lead { color: #666; margin: 0 0 24px; font-size: 13px; }
+
+    .panel { border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin-bottom: 16px; background: #fff; }
+    .panel h2 { margin: 0 0 12px; font-size: 16px; }
+
+    .grid { display: grid; grid-template-columns: max-content 1fr; gap: 8px 12px; align-items: center; }
+    .grid label { font-size: 12px; color: #555; }
+    input, select { padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
+    input[type=text], input[type=number], input[type=datetime-local], select { width: 100%; }
+    .row { display: flex; gap: 8px; align-items: center; margin: 8px 0; flex-wrap: wrap; }
+    .row > * { flex: 0 0 auto; }
+
+    button { padding: 6px 12px; border: 0; background: #2962ff; color: white; border-radius: 4px; cursor: pointer; font-size: 13px; }
+    button.secondary { background: #888; }
+    button.danger { background: #c62828; }
+    button.ghost { background: transparent; color: #2962ff; padding: 4px 8px; }
+    button:hover { filter: brightness(0.92); }
+    button:disabled { background: #bbb !important; color: #fff !important; cursor: not-allowed; }
+
+    .items-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    .items-table th { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: .5px; text-align: left; padding: 6px 4px; border-bottom: 1px solid #eee; font-weight: 500; }
+    .items-table td { padding: 4px; vertical-align: middle; }
+    .items-table input, .items-table select { font-size: 12px; padding: 4px 6px; }
+
+    .event-card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+    .event-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
+    .event-head h3 { margin: 0; font-size: 16px; }
+    .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #f0f0f0; color: #555; margin-left: 6px; }
+    .badge.before { background: #e3f2fd; color: #0d47a1; }
+    .badge.ongoing { background: #e8f5e9; color: #1b5e20; }
+    .badge.ended { background: #f5f5f5; color: #666; }
+    .badge.locked { background: #ffe0e0; color: #b71c1c; }
+
+    .item-row td { background: #fafafa; }
+    .new-item-row td { background: #f5faff; }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #222; color: #fff; padding: 10px 16px; border-radius: 4px; font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none; max-width: 80vw; }
+    .toast.show { opacity: 1; }
+    .toast.error { background: #c62828; }
+    .empty { color: #888; font-style: italic; padding: 16px 0; }
+
+    .section-title { margin: 24px 0 8px; font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: .5px; }
+  </style>
+</head>
+<body>
+  <h1>Event Admin</h1>
+  <p class="lead">이벤트 시작 이후에는 수정·삭제가 잠깁니다.</p>
+
+  <!-- 생성 패널 -->
+  <div class="panel">
+    <h2>새 이벤트 등록</h2>
+    <div class="grid">
+      <label>타입</label>
+      <select id="newType">
+        <option value="MISSION">MISSION</option>
+        <option value="ATTENDANCE">ATTENDANCE</option>
+      </select>
+      <label>이름</label>
+      <input id="newName" type="text" placeholder="예: 신년 출석" />
+      <label>활성</label>
+      <select id="newActive">
+        <option value="true">true</option>
+        <option value="false">false</option>
+      </select>
+      <label>시작</label>
+      <input id="newStart" type="datetime-local" />
+      <label>종료</label>
+      <input id="newEnd" type="datetime-local" />
+    </div>
+
+    <div class="section-title">자식 항목</div>
+    <table class="items-table" id="newItemsTable">
+      <thead id="newItemsHead"></thead>
+      <tbody id="newItemsBody"></tbody>
+    </table>
+    <div class="row">
+      <button class="ghost" id="addNewItem">＋ 항목 추가</button>
+    </div>
+
+    <div class="row" style="margin-top:16px;">
+      <button id="createBtn">등록</button>
+      <button class="secondary" id="resetBtn">초기화</button>
+    </div>
+  </div>
+
+  <!-- 기존 이벤트 목록 -->
+  <div class="section-title">등록된 이벤트</div>
+  <div id="list" class="empty">불러오는 중...</div>
+
+  <!-- 운영툴 raw 뷰 -->
+  <div class="section-title">운영툴 — eventMaster raw (필터 없음 · 모든 컬럼)</div>
+  <div class="row" style="margin-bottom:8px;">
+    <button class="ghost" id="reloadRaw">새로고침</button>
+    <span id="rawSummary" style="color:#888;font-size:12px;"></span>
+  </div>
+  <div id="raw" class="empty">불러오는 중...</div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // ---------- utils ----------
+    const $ = (id) => document.getElementById(id);
+    const $list = $('list');
+    const $toast = $('toast');
+
+    function toast(msg, isError = false) {
+      $toast.textContent = msg;
+      $toast.className = 'toast show' + (isError ? ' error' : '');
+      setTimeout(() => { $toast.className = 'toast'; }, 3500);
+    }
+
+    function fmtIso(dt) { return String(dt).replace('T', ' ').slice(0, 16); }
+    function toLocalInput(dt) { return String(dt).slice(0, 16); }
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function defaultDateInput(offsetHours) {
+      const d = new Date(Date.now() + offsetHours * 3600 * 1000);
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    async function api(method, path, body) {
+      const opts = { method, headers: { 'Content-Type': 'application/json' } };
+      if (body !== undefined) opts.body = JSON.stringify(body);
+      const res = await fetch(path, opts);
+      const text = await res.text();
+      if (!res.ok) {
+        let msg = text;
+        try { msg = JSON.parse(text).message || text; } catch (_) {}
+        throw new Error(msg || ('HTTP ' + res.status));
+      }
+      if (!text) return null;
+      const parsed = JSON.parse(text);
+      // 서버가 SuccessResponse({code, message, data}) 로 wrap 함 → data 만 꺼낸다.
+      return (parsed && typeof parsed === 'object' && 'data' in parsed) ? parsed.data : parsed;
+    }
+
+    // ---------- 생성 폼 ----------
+    function missionItemRow(item = {}) {
+      const tr = document.createElement('tr');
+      tr.className = 'new-item-row';
+      tr.innerHTML = `
+        <td><input data-k="name" type="text" value="${item.name ?? ''}" placeholder="미션 이름" /></td>
+        <td>
+          <select data-k="completionCondition">
+            <option value="CLICK" ${item.completionCondition==='CLICK'?'selected':''}>CLICK</option>
+            <option value="PRE_REGISTER" ${item.completionCondition==='PRE_REGISTER'?'selected':''}>PRE_REGISTER</option>
+          </select>
+        </td>
+        <td>
+          <select data-k="reward">
+            <option value="POINT" ${item.reward==='POINT'||!item.reward?'selected':''}>POINT</option>
+          </select>
+        </td>
+        <td><button class="ghost danger remove-row" type="button">삭제</button></td>
+      `;
+      tr.querySelector('.remove-row').addEventListener('click', () => tr.remove());
+      return tr;
+    }
+    function attendanceItemRow(item = {}, idx = 1) {
+      const tr = document.createElement('tr');
+      tr.className = 'new-item-row';
+      tr.innerHTML = `
+        <td><input data-k="day" type="number" min="1" value="${item.day ?? idx}" style="width:80px;" /></td>
+        <td>
+          <select data-k="reward">
+            <option value="POINT" ${item.reward==='POINT'||!item.reward?'selected':''}>POINT</option>
+          </select>
+        </td>
+        <td><button class="ghost danger remove-row" type="button">삭제</button></td>
+      `;
+      tr.querySelector('.remove-row').addEventListener('click', () => tr.remove());
+      return tr;
+    }
+
+    function rebuildItemsTableHead() {
+      const type = $('newType').value;
+      const head = $('newItemsHead');
+      if (type === 'MISSION') {
+        head.innerHTML = `<tr><th>이름</th><th>달성 조건</th><th>reward</th><th></th></tr>`;
+      } else {
+        head.innerHTML = `<tr><th>day</th><th>reward</th><th></th></tr>`;
+      }
+    }
+
+    function addNewItem() {
+      const type = $('newType').value;
+      const body = $('newItemsBody');
+      const idx = body.children.length + 1;
+      body.appendChild(type === 'MISSION' ? missionItemRow() : attendanceItemRow({}, idx));
+    }
+
+    function collectNewItems() {
+      const type = $('newType').value;
+      return Array.from($('newItemsBody').children).map(tr => {
+        const obj = {};
+        tr.querySelectorAll('[data-k]').forEach(el => { obj[el.dataset.k] = el.value; });
+        if (type === 'MISSION') {
+          return {
+            name: obj.name,
+            completionCondition: obj.completionCondition,
+            reward: obj.reward,
+          };
+        } else {
+          return {
+            name: `Day ${obj.day}`,
+            day: Number(obj.day),
+            reward: obj.reward,
+          };
+        }
+      });
+    }
+
+    function resetForm() {
+      $('newType').value = 'MISSION';
+      $('newName').value = '';
+      $('newActive').value = 'true';
+      $('newStart').value = defaultDateInput(1);
+      $('newEnd').value = defaultDateInput(24 * 8);
+      $('newItemsBody').innerHTML = '';
+      rebuildItemsTableHead();
+    }
+
+    $('newType').addEventListener('change', () => {
+      $('newItemsBody').innerHTML = '';
+      rebuildItemsTableHead();
+    });
+    $('addNewItem').addEventListener('click', addNewItem);
+    $('resetBtn').addEventListener('click', resetForm);
+
+    $('createBtn').addEventListener('click', async () => {
+      try {
+        const payload = {
+          type: $('newType').value,
+          name: $('newName').value.trim(),
+          isActive: $('newActive').value === 'true',
+          startedAt: $('newStart').value,
+          endedAt: $('newEnd').value,
+          items: collectNewItems(),
+        };
+        if (!payload.name) { toast('이름을 입력하세요', true); return; }
+        if (!payload.startedAt || !payload.endedAt) { toast('시작/종료 일시를 입력하세요', true); return; }
+        const result = await api('POST', '/admin/events/with-items', payload);
+        toast(`등록됨 (eventId=${result.eventId})`);
+        resetForm();
+        load();
+      } catch (e) { toast('등록 실패: ' + e.message, true); }
+    });
+
+    // ---------- 목록 / 편집 ----------
+    function isLocked(event) {
+      return new Date(event.startedAt) <= new Date();
+    }
+
+    function statusBadgeClass(status) {
+      return ({ BEFORE: 'before', ONGOING: 'ongoing', ENDED: 'ended' })[status] || '';
+    }
+
+    async function load() {
+      $list.className = 'empty';
+      $list.textContent = '불러오는 중...';
+      try {
+        const events = await api('GET', '/admin/events');
+        render(events);
+      } catch (e) {
+        $list.className = 'empty';
+        $list.textContent = '조회 실패: ' + e.message;
+      }
+      // 운영툴 raw 도 같이 갱신
+      loadRaw();
+    }
+
+    function render(events) {
+      if (!events || !events.length) {
+        $list.className = 'empty';
+        $list.textContent = '등록된 이벤트가 없습니다.';
+        return;
+      }
+      $list.className = '';
+      $list.innerHTML = '';
+      events.forEach(e => $list.appendChild(renderEventCard(e)));
+    }
+
+    function renderEventCard(event) {
+      const card = document.createElement('div');
+      card.className = 'event-card';
+      const locked = isLocked(event);
+
+      // 헤더
+      const head = document.createElement('div');
+      head.className = 'event-head';
+      const h3 = document.createElement('h3');
+      h3.innerHTML = `${event.name}
+        <span class="badge">${event.type}</span>
+        <span class="badge ${statusBadgeClass(event.status)}">${event.status}</span>
+        ${locked ? '<span class="badge locked">LOCKED</span>' : ''}`;
+      head.appendChild(h3);
+      const headBtns = document.createElement('div');
+      headBtns.className = 'row';
+      const saveBtn = document.createElement('button'); saveBtn.textContent = '저장';
+      const delBtn = document.createElement('button'); delBtn.textContent = '삭제'; delBtn.className = 'danger';
+      if (locked) { saveBtn.disabled = true; delBtn.disabled = true; }
+      headBtns.appendChild(saveBtn); headBtns.appendChild(delBtn);
+      head.appendChild(headBtns);
+      card.appendChild(head);
+
+      // 부모 폼
+      const grid = document.createElement('div'); grid.className = 'grid';
+      grid.innerHTML = `
+        <label>이름</label><input data-k="name" type="text" value="${event.name}" />
+        <label>활성</label>
+        <select data-k="isActive">
+          <option value="true" ${event.isActive ? 'selected' : ''}>true</option>
+          <option value="false" ${!event.isActive ? 'selected' : ''}>false</option>
+        </select>
+        <label>시작</label><input data-k="startedAt" type="datetime-local" value="${toLocalInput(event.startedAt)}" />
+        <label>종료</label><input data-k="endedAt" type="datetime-local" value="${toLocalInput(event.endedAt)}" />
+      `;
+      grid.querySelectorAll('input, select').forEach(el => { if (locked) el.disabled = true; });
+      // isActive 는 boolean 으로 다시 세팅 (string)
+      grid.querySelector('[data-k="isActive"]').value = String(event.isActive);
+      card.appendChild(grid);
+
+      saveBtn.addEventListener('click', async () => {
+        try {
+          const payload = collect(grid);
+          payload.isActive = payload.isActive === 'true';
+          await api('PUT', `/admin/events/${event.id}`, payload);
+          toast('수정됨'); load();
+        } catch (e) { toast('수정 실패: ' + e.message, true); }
+      });
+      delBtn.addEventListener('click', async () => {
+        if (!confirm(`'${event.name}' 을 삭제할까요? (자식 항목 포함)`)) return;
+        try { await api('DELETE', `/admin/events/${event.id}`); toast('삭제됨'); load(); }
+        catch (e) { toast('삭제 실패: ' + e.message, true); }
+      });
+
+      // 자식 테이블
+      card.appendChild(renderChildrenTable(event, locked));
+
+      return card;
+    }
+
+    function renderChildrenTable(event, locked) {
+      const wrap = document.createElement('div');
+      const title = document.createElement('div');
+      title.className = 'section-title';
+      title.textContent = '자식 항목';
+      wrap.appendChild(title);
+
+      const table = document.createElement('table');
+      table.className = 'items-table';
+      const head = document.createElement('thead');
+      if (event.type === 'MISSION') {
+        head.innerHTML = `<tr><th>id</th><th>이름</th><th>달성 조건</th><th>reward</th><th></th></tr>`;
+      } else {
+        head.innerHTML = `<tr><th>id</th><th>day</th><th>reward</th><th></th></tr>`;
+      }
+      table.appendChild(head);
+
+      const body = document.createElement('tbody');
+      const items = event.type === 'MISSION' ? (event.missions || []) : (event.attendances || []);
+      items.forEach(it => body.appendChild(renderExistingChildRow(event, it, locked)));
+      table.appendChild(body);
+      wrap.appendChild(table);
+
+      // 자식 추가 폼
+      const addRow = document.createElement('div'); addRow.className = 'row';
+      const addBtn = document.createElement('button'); addBtn.className = 'ghost'; addBtn.textContent = '＋ 자식 추가';
+      if (locked) addBtn.disabled = true;
+      addRow.appendChild(addBtn);
+      wrap.appendChild(addRow);
+
+      addBtn.addEventListener('click', () => {
+        // 인라인 새 행 추가
+        const tr = event.type === 'MISSION' ? newMissionChildRow(event) : newAttendanceChildRow(event, (items.length + 1));
+        body.appendChild(tr);
+      });
+
+      return wrap;
+    }
+
+    function renderExistingChildRow(event, item, locked) {
+      const tr = document.createElement('tr');
+      tr.className = 'item-row';
+      if (event.type === 'MISSION') {
+        tr.innerHTML = `
+          <td style="color:#888;font-size:12px;">${item.id}</td>
+          <td><input data-k="name" type="text" value="${item.name ?? ''}" /></td>
+          <td>
+            <select data-k="completionCondition">
+              <option value="CLICK" ${item.completionCondition==='CLICK'?'selected':''}>CLICK</option>
+              <option value="PRE_REGISTER" ${item.completionCondition==='PRE_REGISTER'?'selected':''}>PRE_REGISTER</option>
+            </select>
+          </td>
+          <td>
+            <select data-k="reward">
+              <option value="POINT" ${item.reward==='POINT'?'selected':''}>POINT</option>
+            </select>
+          </td>
+          <td></td>`;
+      } else {
+        tr.innerHTML = `
+          <td style="color:#888;font-size:12px;">${item.id}</td>
+          <td><input data-k="day" type="number" min="1" value="${item.day}" style="width:80px;" /></td>
+          <td>
+            <select data-k="reward">
+              <option value="POINT" ${item.reward==='POINT'?'selected':''}>POINT</option>
+            </select>
+          </td>
+          <td></td>`;
+      }
+      const actions = tr.querySelector('td:last-child');
+      const save = document.createElement('button'); save.textContent = '저장';
+      const del = document.createElement('button'); del.textContent = '삭제'; del.className = 'danger';
+      if (locked) { save.disabled = true; del.disabled = true; tr.querySelectorAll('input, select').forEach(el => el.disabled = true); }
+      save.style.marginRight = '4px';
+      actions.appendChild(save); actions.appendChild(del);
+
+      save.addEventListener('click', async () => {
+        try {
+          const payload = collectChildPayload(event.type, tr);
+          await api('PUT', `/admin/events/items/${item.id}`, payload);
+          toast('저장됨'); load();
+        } catch (e) { toast('저장 실패: ' + e.message, true); }
+      });
+      del.addEventListener('click', async () => {
+        if (!confirm('이 자식 항목을 삭제할까요?')) return;
+        try { await api('DELETE', `/admin/events/items/${item.id}`); toast('삭제됨'); load(); }
+        catch (e) { toast('삭제 실패: ' + e.message, true); }
+      });
+      return tr;
+    }
+
+    function newMissionChildRow(event) {
+      const tr = document.createElement('tr');
+      tr.className = 'new-item-row';
+      tr.innerHTML = `
+        <td style="color:#0d47a1;font-size:12px;">신규</td>
+        <td><input data-k="name" type="text" placeholder="미션 이름" /></td>
+        <td>
+          <select data-k="completionCondition">
+            <option value="CLICK">CLICK</option>
+            <option value="PRE_REGISTER">PRE_REGISTER</option>
+          </select>
+        </td>
+        <td>
+          <select data-k="reward"><option value="POINT">POINT</option></select>
+        </td>
+        <td></td>`;
+      attachChildAddHandlers(event, tr);
+      return tr;
+    }
+
+    function newAttendanceChildRow(event, dayDefault) {
+      const tr = document.createElement('tr');
+      tr.className = 'new-item-row';
+      tr.innerHTML = `
+        <td style="color:#0d47a1;font-size:12px;">신규</td>
+        <td><input data-k="day" type="number" min="1" value="${dayDefault}" style="width:80px;" /></td>
+        <td><select data-k="reward"><option value="POINT">POINT</option></select></td>
+        <td></td>`;
+      attachChildAddHandlers(event, tr);
+      return tr;
+    }
+
+    function attachChildAddHandlers(event, tr) {
+      const actions = tr.querySelector('td:last-child');
+      const add = document.createElement('button'); add.textContent = '추가';
+      const cancel = document.createElement('button'); cancel.textContent = '취소'; cancel.className = 'secondary';
+      add.style.marginRight = '4px';
+      actions.appendChild(add); actions.appendChild(cancel);
+
+      add.addEventListener('click', async () => {
+        try {
+          const payload = collectChildPayload(event.type, tr);
+          await api('POST', `/admin/events/${event.id}/items`, payload);
+          toast('자식 추가됨'); load();
+        } catch (e) { toast('추가 실패: ' + e.message, true); }
+      });
+      cancel.addEventListener('click', () => tr.remove());
+    }
+
+    function collect(container) {
+      const out = {};
+      container.querySelectorAll('[data-k]').forEach(el => { out[el.dataset.k] = el.value; });
+      return out;
+    }
+    function collectChildPayload(parentType, container) {
+      const raw = collect(container);
+      if (parentType === 'MISSION') {
+        return {
+          name: raw.name,
+          reward: raw.reward,
+          completionCondition: raw.completionCondition,
+        };
+      }
+      return {
+        name: `Day ${raw.day}`,
+        reward: raw.reward,
+        day: Number(raw.day),
+      };
+    }
+
+    // ---------- 운영툴 raw ----------
+    const RAW_COLS = [
+      'eventId','parentEventId','type','name','isActive',
+      'startedAt','endedAt','completionCondition','reward','day',
+    ];
+
+    async function loadRaw() {
+      const $raw = $('raw'); const $sum = $('rawSummary');
+      $raw.className = 'empty'; $raw.textContent = '불러오는 중...';
+      try {
+        const trees = await api('GET', '/admin/events/raw');
+        renderRaw(trees);
+      } catch (e) {
+        $raw.className = 'empty'; $raw.textContent = '조회 실패: ' + e.message;
+        $sum.textContent = '';
+      }
+    }
+
+    function renderRaw(trees) {
+      const $raw = $('raw'); const $sum = $('rawSummary');
+      const totalRows = trees.reduce((acc, t) => acc + 1 + (t.children?.length || 0), 0);
+      $sum.textContent = `부모 ${trees.length}건 · 자식 ${totalRows - trees.length}건 · 총 ${totalRows} 행`;
+      if (!trees.length) { $raw.className = 'empty'; $raw.textContent = '데이터 없음'; return; }
+      $raw.className = '';
+      $raw.innerHTML = '';
+      trees.forEach(t => $raw.appendChild(renderRawTree(t)));
+    }
+
+    function renderRawTree(tree) {
+      const card = document.createElement('div');
+      card.className = 'event-card';
+
+      const head = document.createElement('div');
+      head.className = 'section-title';
+      head.style.margin = '0 0 6px';
+      head.textContent = `parent eventId=${tree.parent.eventId}`;
+      card.appendChild(head);
+
+      card.appendChild(rawTable([tree.parent]));
+
+      const childTitle = document.createElement('div');
+      childTitle.className = 'section-title';
+      childTitle.style.margin = '12px 0 6px';
+      childTitle.textContent = `children (${tree.children.length})`;
+      card.appendChild(childTitle);
+
+      if (tree.children.length) {
+        card.appendChild(rawTable(tree.children));
+      } else {
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.style.padding = '4px 0';
+        empty.textContent = '(자식 없음)';
+        card.appendChild(empty);
+      }
+      return card;
+    }
+
+    function rawTable(rows) {
+      const tbl = document.createElement('table');
+      tbl.className = 'items-table';
+      const thead = document.createElement('thead');
+      thead.innerHTML = '<tr>' + RAW_COLS.map(c => `<th>${c}</th>`).join('') + '</tr>';
+      tbl.appendChild(thead);
+      const tbody = document.createElement('tbody');
+      rows.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.className = 'item-row';
+        tr.innerHTML = RAW_COLS.map(c => {
+          const v = row[c];
+          const text = v === null || v === undefined ? '<span style="color:#bbb;">null</span>' : escapeHtml(String(v));
+          return `<td style="font-family:ui-monospace,Menlo,monospace;font-size:11px;">${text}</td>`;
+        }).join('');
+        tbody.appendChild(tr);
+      });
+      tbl.appendChild(tbody);
+      return tbl;
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    $('reloadRaw').addEventListener('click', loadRaw);
+
+    // ---------- init ----------
+    resetForm();
+    load();
+    loadRaw();
+  </script>
+</body>
+</html>

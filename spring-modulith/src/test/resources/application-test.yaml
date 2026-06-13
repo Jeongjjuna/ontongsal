@@ -19,3 +19,9 @@ spring:
         generate-ddl: true
         # 쿼리 확인이 필요 없다면 테스트 속도 향상과 로그 정리를 위해 false로 끄셔도 됩니다.
         show-sql: true
+
+    kafka:
+        bootstrap-servers:
+        # kafka 정보는 ApplicationContext 로드시 동적으로 주입
+        consumer:
+            enable-auto-commit: false

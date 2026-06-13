@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>Events</title>
+  <style>
+    :root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #222; }
+    body { max-width: 720px; margin: 24px auto; padding: 0 16px; }
+    h1 { margin-bottom: 8px; }
+    .user-row { display: flex; align-items: center; gap: 8px; margin: 16px 0 24px; }
+    .user-row label { font-size: 14px; color: #555; }
+    .user-row input { padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; width: 120px; }
+    .event { border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+    .event header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+    .event h2 { margin: 0; font-size: 18px; }
+    .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #f0f0f0; color: #555; }
+    .period { font-size: 12px; color: #888; margin-bottom: 12px; }
+    .items { display: flex; flex-direction: column; gap: 8px; }
+    .item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #fafafa; border-radius: 4px; }
+    .item .label { font-size: 14px; }
+    .item .meta { font-size: 12px; color: #888; }
+    button { padding: 6px 12px; border: 0; background: #2962ff; color: white; border-radius: 4px; cursor: pointer; font-size: 13px; }
+    button:hover { background: #1e4ec2; }
+    button:disabled { background: #bbb; cursor: not-allowed; }
+    .empty { color: #888; font-style: italic; }
+    #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #222; color: #fff; padding: 10px 16px; border-radius: 4px; font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+    #toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <h1>참여 가능한 이벤트</h1>
+
+  <div class="user-row">
+    <label for="userId">X-User-Id</label>
+    <input id="userId" type="number" value="1" min="1" />
+    <button id="reload">새로고침</button>
+  </div>
+
+  <div class="user-row">
+    <label><input type="checkbox" class="status" value="BEFORE" /> 시작 전</label>
+    <label><input type="checkbox" class="status" value="ONGOING" checked /> 진행중</label>
+    <label><input type="checkbox" class="status" value="ENDED" /> 종료</label>
+  </div>
+
+  <div id="list" class="empty">불러오는 중...</div>
+
+  <div id="toast"></div>
+
+  <script>
+    const $list = document.getElementById('list');
+    const $userId = document.getElementById('userId');
+    const $toast = document.getElementById('toast');
+
+    document.getElementById('reload').addEventListener('click', loadEvents);
+    document.querySelectorAll('input.status').forEach(el => el.addEventListener('change', loadEvents));
+
+    function toast(msg) {
+      $toast.textContent = msg;
+      $toast.classList.add('show');
+      setTimeout(() => $toast.classList.remove('show'), 2200);
+    }
+
+    function fmt(dt) {
+      // ISO -> 'YYYY-MM-DD HH:mm'
+      return String(dt).replace('T', ' ').slice(0, 16);
+    }
+
+    function selectedStatuses() {
+      return Array.from(document.querySelectorAll('input.status:checked')).map(el => el.value);
+    }
+
+    function unwrap(payload) {
+      return (payload && typeof payload === 'object' && 'data' in payload) ? payload.data : payload;
+    }
+
+    async function loadEvents() {
+      $list.className = 'empty';
+      $list.textContent = '불러오는 중...';
+      try {
+        const statuses = selectedStatuses();
+        const qs = statuses.length ? ('?statuses=' + statuses.join(',')) : '';
+        const res = await fetch('/events' + qs);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const events = unwrap(await res.json());
+        render(events);
+      } catch (e) {
+        $list.className = 'empty';
+        $list.textContent = '조회 실패: ' + e.message;
+      }
+    }
+
+    function render(events) {
+      if (!events.length) {
+        $list.className = 'empty';
+        $list.textContent = '조건에 맞는 이벤트가 없습니다.';
+        return;
+      }
+      $list.className = '';
+      $list.innerHTML = '';
+      for (const e of events) {
+        $list.appendChild(renderEvent(e));
+      }
+    }
+
+    function renderEvent(e) {
+      const root = document.createElement('div');
+      root.className = 'event';
+
+      const header = document.createElement('header');
+      const h2 = document.createElement('h2');
+      h2.textContent = e.name;
+      const badges = document.createElement('div');
+      const typeBadge = document.createElement('span');
+      typeBadge.className = 'badge';
+      typeBadge.textContent = e.type;
+      const statusBadge = document.createElement('span');
+      statusBadge.className = 'badge';
+      statusBadge.textContent = e.status;
+      statusBadge.style.marginLeft = '6px';
+      badges.appendChild(typeBadge);
+      badges.appendChild(statusBadge);
+      header.appendChild(h2);
+      header.appendChild(badges);
+      root.appendChild(header);
+
+      const period = document.createElement('div');
+      period.className = 'period';
+      period.textContent = `${fmt(e.startedAt)} ~ ${fmt(e.endedAt)}`;
+      root.appendChild(period);
+
+      const items = document.createElement('div');
+      items.className = 'items';
+      const list = e.type === 'MISSION' ? (e.missions || []) : (e.attendances || []);
+      for (const item of list) {
+        items.appendChild(renderItem(e.type, e.status, item));
+      }
+      root.appendChild(items);
+      return root;
+    }
+
+    function renderItem(type, status, item) {
+      const row = document.createElement('div');
+      row.className = 'item';
+
+      const left = document.createElement('div');
+      const label = document.createElement('div');
+      label.className = 'label';
+      label.textContent = type === 'MISSION' ? item.name : `Day ${item.day}`;
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = type === 'MISSION'
+        ? `${item.completionCondition} · 보상 ${item.reward}`
+        : `보상 ${item.reward}`;
+      left.appendChild(label);
+      left.appendChild(meta);
+
+      const btn = document.createElement('button');
+      btn.textContent = '완료';
+      btn.disabled = status !== 'ONGOING';
+      btn.title = status !== 'ONGOING' ? '진행중인 이벤트만 완료할 수 있습니다' : '';
+      btn.addEventListener('click', () => completeItem(item.id, btn));
+
+      row.appendChild(left);
+      row.appendChild(btn);
+      return row;
+    }
+
+    async function completeItem(eventId, btn) {
+      const userId = $userId.value;
+      if (!userId) {
+        toast('userId 를 입력하세요');
+        return;
+      }
+      btn.disabled = true;
+      try {
+        const res = await fetch(`/events/${eventId}/complete`, {
+          method: 'POST',
+          headers: { 'X-User-Id': userId },
+        });
+        if (!res.ok) {
+          const body = await res.text();
+          throw new Error(body || ('HTTP ' + res.status));
+        }
+        toast('완료 처리됨');
+      } catch (e) {
+        toast('실패: ' + e.message);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    loadEvents();
+  </script>
+</body>
+</html>
