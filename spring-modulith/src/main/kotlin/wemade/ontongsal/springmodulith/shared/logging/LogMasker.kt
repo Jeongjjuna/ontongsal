@@ -5,7 +5,7 @@ import tools.jackson.databind.json.JsonMapper
 import tools.jackson.databind.node.ArrayNode
 import tools.jackson.databind.node.ObjectNode
 
-object JsonMasker {
+object LogMasker {
     private val mapper = JsonMapper()
 
     private const val MASK = "***"

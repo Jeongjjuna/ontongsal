@@ -9,7 +9,7 @@ import org.jetbrains.exposed.v1.jdbc.select
 import org.jetbrains.exposed.v1.jdbc.update
 import org.springframework.stereotype.Repository
 import wemade.ontongsal.springmodulith.event.application.port.EventCompletionPort
-import wemade.ontongsal.springmodulith.shared.TransactionRunner
+import wemade.ontongsal.springmodulith.shared.transation.TransactionRunner
 import java.time.LocalDateTime
 
 @Repository

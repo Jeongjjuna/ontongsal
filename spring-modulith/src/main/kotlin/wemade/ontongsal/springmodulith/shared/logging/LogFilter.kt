@@ -4,17 +4,12 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.core.Ordered
-import org.springframework.core.annotation.Order
-import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.util.ContentCachingResponseWrapper
 import java.nio.charset.StandardCharsets
 
 private val log = KotlinLogging.logger {}
 
-@Order(Ordered.HIGHEST_PRECEDENCE + 1)
-@Component
 class LogFilter : OncePerRequestFilter() {
 
     companion object {
@@ -58,8 +53,8 @@ class LogFilter : OncePerRequestFilter() {
             "method" to method,
             "uri" to uri,
             "query" to queryParams,
-            "body" to JsonMasker.maskFrom(requestBody),
-            "headers" to JsonMasker.maskFrom(headers),
+            "body" to LogMasker.maskFrom(requestBody),
+            "headers" to LogMasker.maskFrom(headers),
         )
         log.info { logMap }
     }

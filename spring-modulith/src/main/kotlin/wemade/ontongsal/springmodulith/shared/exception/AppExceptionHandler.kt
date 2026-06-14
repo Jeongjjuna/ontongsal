@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import tools.jackson.databind.exc.InvalidFormatException
 import tools.jackson.databind.exc.MismatchedInputException
-import wemade.ontongsal.springmodulith.shared.AppException
 import wemade.ontongsal.springmodulith.shared.response.ErrorDetail
 import wemade.ontongsal.springmodulith.shared.response.ErrorResponse
 

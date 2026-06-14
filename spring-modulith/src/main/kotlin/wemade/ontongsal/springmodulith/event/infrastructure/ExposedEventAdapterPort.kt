@@ -15,7 +15,7 @@ import wemade.ontongsal.springmodulith.event.application.port.UpdateParentEventC
 import wemade.ontongsal.springmodulith.event.domain.event.EventStatus
 import wemade.ontongsal.springmodulith.event.domain.RewardType
 import wemade.ontongsal.springmodulith.event.domain.event.*
-import wemade.ontongsal.springmodulith.shared.TransactionRunner
+import wemade.ontongsal.springmodulith.shared.transation.TransactionRunner
 import java.time.LocalDateTime
 
 @Component

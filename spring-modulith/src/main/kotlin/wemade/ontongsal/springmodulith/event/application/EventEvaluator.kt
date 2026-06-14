@@ -9,7 +9,7 @@ import wemade.ontongsal.springmodulith.event.domain.event.CompletionCondition
 import wemade.ontongsal.springmodulith.event.domain.event.Event
 import wemade.ontongsal.springmodulith.event.domain.event.MissionEvent
 import wemade.ontongsal.springmodulith.event.domain.event.MissionItem
-import wemade.ontongsal.springmodulith.shared.AppException
+import wemade.ontongsal.springmodulith.shared.exception.AppException
 import java.time.LocalDate
 
 @Component

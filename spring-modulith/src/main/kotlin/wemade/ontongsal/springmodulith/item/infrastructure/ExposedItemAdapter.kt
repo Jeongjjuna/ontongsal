@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import wemade.ontongsal.springmodulith.item.application.ItemQueryPort
 import wemade.ontongsal.springmodulith.item.domain.ItemStatus
-import wemade.ontongsal.springmodulith.shared.TransactionRunner
+import wemade.ontongsal.springmodulith.shared.transation.TransactionRunner
 import java.math.BigDecimal
 
 @Primary

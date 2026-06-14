@@ -7,7 +7,7 @@ import wemade.ontongsal.springmodulith.item.ItemApi
 import wemade.ontongsal.springmodulith.order.OrderCreatedEvent
 import wemade.ontongsal.springmodulith.order.domain.Order
 import wemade.ontongsal.springmodulith.order.presentation.CreateOrderCommand
-import wemade.ontongsal.springmodulith.shared.TransactionRunner
+import wemade.ontongsal.springmodulith.shared.transation.TransactionRunner
 
 @Service
 class OrderService(

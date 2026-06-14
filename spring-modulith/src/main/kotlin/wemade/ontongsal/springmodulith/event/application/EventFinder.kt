@@ -5,7 +5,7 @@ import wemade.ontongsal.springmodulith.event.application.port.EventRepositoryPor
 import wemade.ontongsal.springmodulith.event.domain.EventErrorCode
 import wemade.ontongsal.springmodulith.event.domain.event.Event
 import wemade.ontongsal.springmodulith.event.domain.event.EventStatus
-import wemade.ontongsal.springmodulith.shared.AppException
+import wemade.ontongsal.springmodulith.shared.exception.AppException
 
 @Component
 internal class EventFinder(

@@ -1,6 +1,6 @@
 package wemade.ontongsal.springmodulith.event.domain
 
-import wemade.ontongsal.springmodulith.shared.ErrorCode
+import wemade.ontongsal.springmodulith.shared.exception.ErrorCode
 
 enum class EventErrorCode(
     override val code: Int,

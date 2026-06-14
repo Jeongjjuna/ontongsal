@@ -1,6 +1,4 @@
-package wemade.ontongsal.springmodulith.shared
-
-import wemade.ontongsal.springmodulith.shared.messaging.Event
+package wemade.ontongsal.springmodulith.shared.messaging
 
 interface EventPublisher {
     fun publish(event: Event<*>)

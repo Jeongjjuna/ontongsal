@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import wemade.ontongsal.springmodulith.item.ItemApi
 import wemade.ontongsal.springmodulith.item.ItemSnapshot
 import wemade.ontongsal.springmodulith.item.domain.ItemErrorCode
-import wemade.ontongsal.springmodulith.shared.AppException
+import wemade.ontongsal.springmodulith.shared.exception.AppException
 
 @Service
 class ItemService(

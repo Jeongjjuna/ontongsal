@@ -1,4 +1,4 @@
-package wemade.ontongsal.springmodulith.shared
+package wemade.ontongsal.springmodulith.shared.exception
 
 interface ErrorCode {
     val code: Int

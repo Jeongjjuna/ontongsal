@@ -3,9 +3,9 @@ package wemade.ontongsal.springmodulith.shared.messaging.kafka
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
-import wemade.ontongsal.springmodulith.shared.EventPublisher
 import wemade.ontongsal.springmodulith.shared.messaging.Event
 import wemade.ontongsal.springmodulith.shared.messaging.EventPayloadSerializer
+import wemade.ontongsal.springmodulith.shared.messaging.EventPublisher
 
 private val log = KotlinLogging.logger {}
 

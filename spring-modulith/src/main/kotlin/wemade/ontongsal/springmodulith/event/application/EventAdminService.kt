@@ -9,8 +9,8 @@ import wemade.ontongsal.springmodulith.event.application.port.UpdateChildEventCo
 import wemade.ontongsal.springmodulith.event.application.port.UpdateParentEventCommand
 import wemade.ontongsal.springmodulith.event.domain.EventErrorCode
 import wemade.ontongsal.springmodulith.event.domain.event.Event
-import wemade.ontongsal.springmodulith.shared.AppException
-import wemade.ontongsal.springmodulith.shared.TransactionRunner
+import wemade.ontongsal.springmodulith.shared.exception.AppException
+import wemade.ontongsal.springmodulith.shared.transation.TransactionRunner
 import java.time.LocalDateTime
 
 @Component

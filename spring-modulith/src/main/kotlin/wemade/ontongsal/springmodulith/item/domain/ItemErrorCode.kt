@@ -1,6 +1,6 @@
 package wemade.ontongsal.springmodulith.item.domain
 
-import wemade.ontongsal.springmodulith.shared.ErrorCode
+import wemade.ontongsal.springmodulith.shared.exception.ErrorCode
 
 enum class ItemErrorCode(
     override val code: Int,

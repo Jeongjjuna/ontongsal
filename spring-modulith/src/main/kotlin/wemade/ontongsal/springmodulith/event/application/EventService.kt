@@ -1,8 +1,8 @@
 package wemade.ontongsal.springmodulith.event.application
 
 import org.springframework.stereotype.Component
-import wemade.ontongsal.springmodulith.shared.EventPublisher
-import wemade.ontongsal.springmodulith.shared.TransactionRunner
+import wemade.ontongsal.springmodulith.shared.messaging.EventPublisher
+import wemade.ontongsal.springmodulith.shared.transation.TransactionRunner
 import wemade.ontongsal.springmodulith.shared.messaging.Event
 import wemade.ontongsal.springmodulith.shared.messaging.EventType
 import wemade.ontongsal.springmodulith.event.domain.event.Event as DomainEvent

@@ -1,4 +1,4 @@
-package wemade.ontongsal.springmodulith.shared
+package wemade.ontongsal.springmodulith.shared.exception
 
 sealed class AppException(
     open val code: Int,

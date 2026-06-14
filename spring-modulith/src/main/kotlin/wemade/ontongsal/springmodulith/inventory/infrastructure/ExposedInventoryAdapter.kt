@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 import wemade.ontongsal.springmodulith.inventory.application.InventoryCommandPort
 import wemade.ontongsal.springmodulith.inventory.application.InventoryQueryPort
 import wemade.ontongsal.springmodulith.inventory.domain.Inventory
-import wemade.ontongsal.springmodulith.shared.TransactionRunner
+import wemade.ontongsal.springmodulith.shared.transation.TransactionRunner
 
 @Primary
 @Repository

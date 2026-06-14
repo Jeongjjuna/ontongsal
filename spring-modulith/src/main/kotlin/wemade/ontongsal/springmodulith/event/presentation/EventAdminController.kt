@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 import wemade.ontongsal.springmodulith.event.application.EventAdminService
 
 @RestController
-@RequestMapping("/admin/events")
+@RequestMapping("/api/admin/events")
 class EventAdminController(
     private val eventAdminService: EventAdminService,
 ) {

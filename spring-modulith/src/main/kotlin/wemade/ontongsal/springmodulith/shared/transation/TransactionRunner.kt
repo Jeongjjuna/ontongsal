@@ -1,4 +1,4 @@
-package wemade.ontongsal.springmodulith.shared
+package wemade.ontongsal.springmodulith.shared.transation
 
 interface TransactionRunner {
     fun <T> run(block: () -> T): T

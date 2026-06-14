@@ -11,7 +11,7 @@ import wemade.ontongsal.springmodulith.event.application.EventService
 import wemade.ontongsal.springmodulith.event.domain.event.EventStatus
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/api/events")
 class EventController(
     private val eventService: EventService,
 ) {
