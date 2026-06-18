@@ -1,5 +1,9 @@
 package event.application
 
+import event.application.port.InviteCodeReader
+import event.application.port.PreRegistrationClient
+import event.application.port.UserLevelReader
+import event.application.port.UserProgressReader
 import event.domain.EventPolicy
 import event.domain.EventPolicy.MissionEventPolicy.ManualParticipation
 import event.domain.EventPolicy.MissionEventPolicy.ReachGameLevel
@@ -16,7 +20,11 @@ interface EventPolicyProcessor<in P : EventPolicy> {
     fun process(userId: String, policy: P): EventResult
 }
 
-class MissionEventProcessor : EventPolicyProcessor<EventPolicy.MissionEventPolicy> {
+class MissionEventProcessor(
+    private val userLevelReader: UserLevelReader,
+    private val preRegistrationClient: PreRegistrationClient,
+) : EventPolicyProcessor<EventPolicy.MissionEventPolicy> {
+
     override fun process(userId: String, policy: EventPolicy.MissionEventPolicy): EventResult {
         return when (policy) {
             is ManualParticipation -> {
@@ -37,7 +45,10 @@ class MissionEventProcessor : EventPolicyProcessor<EventPolicy.MissionEventPolic
     }
 }
 
-class AttendanceEventProcessor : EventPolicyProcessor<EventPolicy.AttendanceEventPolicy> {
+class AttendanceEventProcessor(
+    private val userProgressReader: UserProgressReader,
+) : EventPolicyProcessor<EventPolicy.AttendanceEventPolicy> {
+
     override fun process(userId: String, policy: EventPolicy.AttendanceEventPolicy): EventResult {
         return when (policy) {
             is DailyAttendance -> {
@@ -58,7 +69,10 @@ class AttendanceEventProcessor : EventPolicyProcessor<EventPolicy.AttendanceEven
     }
 }
 
-class InvitationEventProcessor : EventPolicyProcessor<EventPolicy.InvitationEventPolicy> {
+class InvitationEventProcessor(
+    private val inviteCodeReader: InviteCodeReader,
+) : EventPolicyProcessor<EventPolicy.InvitationEventPolicy> {
+
     override fun process(userId: String, policy: EventPolicy.InvitationEventPolicy): EventResult {
         return when (policy) {
             is JoinWithInvitationCode -> {
