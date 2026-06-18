@@ -11,7 +11,7 @@ sealed interface EventPolicy {
         data class ReachGameLevel(val level: Int) : MissionEventPolicy
 
         /** 외부 시스템 사전예약 성공 시 완료 */
-        data class PreRegistrationCompleted(val userId: String) : MissionEventPolicy
+        data object PreRegistrationCompleted : MissionEventPolicy
     }
 
     sealed interface AttendanceEventPolicy : EventPolicy {

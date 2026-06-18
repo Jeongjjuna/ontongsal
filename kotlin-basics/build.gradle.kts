@@ -32,5 +32,7 @@ dependencies {
     // Source: https://mvnrepository.com/artifact/io.arrow-kt/arrow-optics-jvm
     implementation("io.arrow-kt:arrow-optics-jvm:2.2.3")
 
-    testImplementation(kotlin("test"))
+//    testImplementation(kotlin("test"))
+    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
+    testImplementation("io.kotest:kotest-assertions-core:5.9.1")
 }

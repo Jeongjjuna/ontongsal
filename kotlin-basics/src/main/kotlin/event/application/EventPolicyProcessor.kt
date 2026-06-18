@@ -28,18 +28,24 @@ class MissionEventProcessor(
     override fun process(userId: String, policy: EventPolicy.MissionEventPolicy): EventResult {
         return when (policy) {
             is ManualParticipation -> {
-                // TODO
                 EventResult.Success(userId, Instant.now())
             }
 
             is ReachGameLevel -> {
-                // TODO
-                EventResult.Success(userId, Instant.now())
+                val currentLevel = userLevelReader.getUserLevel(userId)
+                if (currentLevel >= policy.level) {
+                    EventResult.Success(userId, Instant.now())
+                } else {
+                    EventResult.Failure.ConditionNotMet
+                }
             }
 
             is PreRegistrationCompleted -> {
-                // TODO
-                EventResult.Success(userId, Instant.now())
+                if (preRegistrationClient.hasCompleted(userId)) {
+                    EventResult.Success(userId, Instant.now())
+                } else {
+                    EventResult.Failure.ConditionNotMet
+                }
             }
         }
     }
