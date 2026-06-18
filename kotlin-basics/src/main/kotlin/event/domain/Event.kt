@@ -1,4 +1,4 @@
-package event
+package event.domain
 
 /**
  * Event <-> Policy 를 연결한다(타입 안전하게)
