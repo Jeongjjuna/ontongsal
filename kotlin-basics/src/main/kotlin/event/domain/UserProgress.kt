@@ -1,3 +1,6 @@
 package event.domain
 
-data object UserProgress
+data class UserProgress(
+    val attendanceCount: Int = 0,
+    val consecutiveAttendanceDays: Int = 0,
+)
