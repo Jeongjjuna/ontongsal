@@ -1,6 +1,5 @@
 package yjh.ontongsal.testing.common.circuitbreaker
 
-import com.fasterxml.jackson.core.JsonProcessingException
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry
 import org.springframework.context.annotation.Bean
@@ -10,6 +9,7 @@ import org.springframework.data.redis.RedisConnectionFailureException
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.ResourceAccessException
+import tools.jackson.core.JacksonException
 import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -47,7 +47,7 @@ class CircuitBreakerConfig {
                 IOException::class.java
             )
             .ignoreExceptions(
-                JsonProcessingException::class.java,
+                JacksonException::class.java,
                 IllegalArgumentException::class.java
             )
             .build()

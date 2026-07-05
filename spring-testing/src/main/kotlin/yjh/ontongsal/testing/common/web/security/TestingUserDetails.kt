@@ -9,7 +9,7 @@ class TestingUserDetails(
     private val password: String,
     private val authorities: List<GrantedAuthority>,
 ) : UserDetails {
-    override fun getAuthorities(): Collection<GrantedAuthority?> {
+    override fun getAuthorities(): Collection<GrantedAuthority> {
         return authorities
     }
 

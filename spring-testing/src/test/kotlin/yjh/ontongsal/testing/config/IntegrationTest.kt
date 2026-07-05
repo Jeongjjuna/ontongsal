@@ -4,12 +4,14 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
+import org.springframework.test.context.TestConstructor
 import yjh.ontongsal.testing.config.KafkaTestContainer.KAFKA_CONTAINER
 import yjh.ontongsal.testing.config.MySQLTestContainer.MYSQL_CONTAINER
 import yjh.ontongsal.testing.config.RedisTestContainer.REDIS_CONTAINER
 
 @ActiveProfiles("integration-test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 abstract class IntegrationTest {
 
     companion object {

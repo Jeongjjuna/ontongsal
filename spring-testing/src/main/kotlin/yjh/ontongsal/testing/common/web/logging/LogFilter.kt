@@ -9,6 +9,7 @@ import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.util.ContentCachingResponseWrapper
+import wemade.ontongsal.springmodulith.shared.logging.JsonMasker
 import yjh.ontongsal.testing.common.web.CachedBodyHttpServletRequest
 import java.nio.charset.StandardCharsets
 

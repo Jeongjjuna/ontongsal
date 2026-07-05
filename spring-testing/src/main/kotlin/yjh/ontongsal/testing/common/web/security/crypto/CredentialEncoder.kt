@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 class CredentialEncoder(
     private val passwordEncoder: PasswordEncoder,
 ) {
-    fun hash(raw: String): String =
+    fun hash(raw: String): String? =
         passwordEncoder.encode(raw)
 
     fun matches(raw: String, hashed: String): Boolean =

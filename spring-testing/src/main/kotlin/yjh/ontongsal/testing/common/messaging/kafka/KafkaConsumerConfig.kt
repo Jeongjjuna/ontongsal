@@ -18,7 +18,7 @@ class KafkaConsumerConfig(
 ) {
 
     @Bean
-    fun consumerFactory(): ConsumerFactory<String, Any> {
+    fun consumerFactory(): ConsumerFactory<String, String> {
         val config: MutableMap<String, Any> = HashMap()
         config[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = kafkaServer
         config[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
@@ -28,13 +28,11 @@ class KafkaConsumerConfig(
 
     @Bean
     fun kafkaListener(
-        consumerFactory: ConsumerFactory<String, Any>,
+        consumerFactory: ConsumerFactory<String, String>,
     ): ConcurrentKafkaListenerContainerFactory<String, String> {
-        val listener = ConcurrentKafkaListenerContainerFactory<String, String>()
-        listener.consumerFactory = consumerFactory
-
-        // 수동 커밋을 위한 설정
-        listener.containerProperties.setAckMode(ContainerProperties.AckMode.RECORD); // or BATCH : 멱등성 보장하도록 구현해야함.
-        return listener
+        return ConcurrentKafkaListenerContainerFactory<String, String>().apply {
+            setConsumerFactory(consumerFactory)
+            containerProperties.ackMode = ContainerProperties.AckMode.RECORD
+        }
     }
 }

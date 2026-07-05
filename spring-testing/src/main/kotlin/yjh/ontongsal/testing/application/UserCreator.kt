@@ -15,7 +15,7 @@ class UserCreator(
     fun create(request: SignupRequest): User {
         val user = User(
             email = request.email,
-            password = credentialEncoder.hash(request.password),
+            password = credentialEncoder.hash(request.password)!!,
             phone = request.phone,
             role = request.role,
         )

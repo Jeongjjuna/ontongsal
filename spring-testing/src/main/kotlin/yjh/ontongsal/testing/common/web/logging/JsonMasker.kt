@@ -1,12 +1,12 @@
-package yjh.ontongsal.testing.common.web.logging
+package wemade.ontongsal.springmodulith.shared.logging
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ArrayNode
-import com.fasterxml.jackson.databind.node.ObjectNode
+import tools.jackson.databind.JsonNode
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.databind.node.ArrayNode
+import tools.jackson.databind.node.ObjectNode
 
 object JsonMasker {
-    private val mapper = ObjectMapper().findAndRegisterModules()
+    private val mapper = JsonMapper()
 
     private const val MASK = "***"
 
@@ -62,17 +62,17 @@ object JsonMasker {
     }
 
     private fun maskObject(obj: ObjectNode): ObjectNode {
-        val fields = obj.fields()
-        while (fields.hasNext()) {
-            val (key, value) = fields.next()
+        val result = obj.objectNode()
 
+        obj.forEachEntry { key, value ->
             if (isSensitive(key)) {
-                obj.put(key, MASK)          // ← 민감키는 value를 ***로 치환
+                result.put(key, MASK)
             } else {
-                obj.set<JsonNode>(key, maskNode(value))  // ← 재귀
+                result.set(key, maskNode(value))
             }
         }
-        return obj
+
+        return result
     }
 
     private fun maskArray(array: ArrayNode): ArrayNode {
